@@ -33,7 +33,29 @@ def materiaActualizar(request,id):
 """
 Aqui van las views de Productos
 """
+def productosVer (request):
+    productos=Productos.objects.all()
+    data = {'productos' : productos, 'titulo':'Tabla Productos'}
+    return render (request,'productosVer.html',data)
 
+def productosCrear(request):
+    form = MateriaPrimaForm()
+    if request.method == 'POST':
+        form = MateriaPrimaForm(request.POST)
+        if form.is_valid():
+            form.save()
+    data = {'form' : form , 'titulo': 'Agregar Materia Prima'}
+    return render (request,'productosCrear.html',data)
+
+def productosActualizar(request,id):
+    materia = MateriaPrima.objects.get(id=id)
+    form= MateriaPrimaForm(instance=materia)
+    if request.method == "POST": 
+        form=MateriaPrimaForm(request.POST,instance=materia)
+        if form.is_valid():
+            form.save()
+    data={'form':form , 'titulo': 'Actualizar Materia Prima'}
+    return render(request,'productosCrear.html',data)
 """
 Aqui van las views de Proveedores
 """
