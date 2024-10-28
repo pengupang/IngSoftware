@@ -16,7 +16,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-
+from AppSoft import views
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('materiaVer/',views.materiaVer),
+    path('materiaCrear/',views.materiaCrear),
+    path('materiaActualizar/',views.materiaActualizar)
 ]
