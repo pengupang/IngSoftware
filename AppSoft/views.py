@@ -59,7 +59,36 @@ def productosActualizar(request,id):
 """
 Aqui van las views de Proveedores
 """
+def proveedoresVer (request):
+    proveedores=Proveedores.objects.all()
+    data = {'proveedores' : proveedores, 'titulo':'Tabla Proveedores'}
+    return render (request,'proveedoresVer.html',data)
 
+def proveedoresCrear(request):
+    form = ProveedoresForm()
+    if request.method == 'POST':
+        form = ProveedoresForm(request.POST)
+        if form.is_valid():
+            form.save()
+    data = {'form' : form , 'titulo': 'Agregar Proveedores'}
+    return render (request,'proveedoresCrear.html',data)
+
+def proveedoresActualizar(request,id):
+    proveedores = ProveedoresForm.objects.get(id=id)
+    form= ProveedoresForm(instance=proveedores)
+    if request.method == "POST": 
+        form=ProveedoresForm(request.POST,instance=proveedores)
+        if form.is_valid():
+            form.save()
+    data={'form':form , 'titulo': 'Actualizar Proveedores'}
+    return render(request,'proveedoresCrear.html',data)
+
+def proveedoresDeshabilitar(request,id):
+     proveedores=Proveedores.objects.get(id=id)
+     if request.method=="POST":
+       proveedores.delete()
+     data={"proveedores":proveedores}
+     return render(request,'proveedoresCrear.html',data)
 """
 Aqui van las views de Usuarios
 """

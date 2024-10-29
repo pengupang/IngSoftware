@@ -24,5 +24,9 @@ urlpatterns = [
     path('materiaActualizar/',views.materiaActualizar),
     path('productosVer/',views.productosVer),
     path('productosCrear/',views.productosCrear),
+    path('proveedoresVer/', views.proveedoresVer),
+    path('proveedoresCrear/', views.proveedoresCrear),
+    path('proveedoresActualizar', views.proveedoresActualizar),
+    path('proveedoresDeshabilitar/', views.proveedoresDeshabilitar)
     
 ]
