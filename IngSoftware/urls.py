@@ -21,12 +21,13 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('materiaVer/',views.materiaVer),
     path('materiaCrear/',views.materiaCrear),
-    path('materiaActualizar/',views.materiaActualizar),
+    path('materiaActualizar/<int:id>',views.materiaActualizar),
     path('productosVer/',views.productosVer),
     path('productosCrear/',views.productosCrear),
+    path('productosActualizar/<int:id>', views.productosActualizar),
     path('proveedoresVer/', views.proveedoresVer),
     path('proveedoresCrear/', views.proveedoresCrear),
-    path('proveedoresActualizar', views.proveedoresActualizar),
+    path('proveedoresActualizar/<int:id>', views.proveedoresActualizar),
     path('proveedoresDeshabilitar/', views.proveedoresDeshabilitar)
     
 ]

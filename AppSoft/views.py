@@ -39,27 +39,27 @@ def productosVer (request):
     return render (request,'productosVer.html',data)
 
 def productosCrear(request):
-    form = MateriaPrimaForm()
+    form = ProductosForm()
     if request.method == 'POST':
-        form = MateriaPrimaForm(request.POST)
+        form = ProductosForm(request.POST)
         if form.is_valid():
             form.save()
-    data = {'form' : form , 'titulo': 'Agregar Materia Prima'}
+    data = {'form' : form , 'titulo': 'Agregar Productos'}
     return render (request,'productosCrear.html',data)
 
 def productosActualizar(request,id):
-    materia = MateriaPrima.objects.get(id=id)
-    form= MateriaPrimaForm(instance=materia)
+    producto = Productos.objects.get(id=id)
+    form= ProductosForm(instance=producto)
     if request.method == "POST": 
-        form=MateriaPrimaForm(request.POST,instance=materia)
+        form=ProductosForm(request.POST,instance=producto)
         if form.is_valid():
             form.save()
-    data={'form':form , 'titulo': 'Actualizar Materia Prima'}
+    data={'form':form , 'titulo': 'Actualizar Producto'}
     return render(request,'productosCrear.html',data)
 """
 Aqui van las views de Proveedores
 """
-def proveedoresVer (request):
+def proveedoresVer(request):
     proveedores=Proveedores.objects.all()
     data = {'proveedores' : proveedores, 'titulo':'Tabla Proveedores'}
     return render (request,'proveedoresVer.html',data)
@@ -74,10 +74,10 @@ def proveedoresCrear(request):
     return render (request,'proveedoresCrear.html',data)
 
 def proveedoresActualizar(request,id):
-    proveedores = ProveedoresForm.objects.get(id=id)
-    form= ProveedoresForm(instance=proveedores)
+    proveedor = Proveedores.objects.get(id=id)
+    form= ProveedoresForm(instance=proveedor)
     if request.method == "POST": 
-        form=ProveedoresForm(request.POST,instance=proveedores)
+        form=ProveedoresForm(request.POST,instance=proveedor)
         if form.is_valid():
             form.save()
     data={'form':form , 'titulo': 'Actualizar Proveedores'}
