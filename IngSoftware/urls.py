@@ -19,6 +19,8 @@ from django.urls import path
 from AppSoft import views
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('login/', views.login),
+    path('registro/', views.registro),
     path('materiaVer/',views.materiaVer),
     path('materiaCrear/',views.materiaCrear),
     path('materiaActualizar/<int:id>',views.materiaActualizar),

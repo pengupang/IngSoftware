@@ -1,7 +1,14 @@
 from django.shortcuts import render
-from AppSoft.models import MateriaPrima,Productos,Proveedores,Usuario
+from AppSoft.models import MateriaPrima,Productos,Proveedores
 from . import forms
-from .forms import MateriaPrimaForm,ProductosForm,ProveedoresForm,UsuarioForm
+from .forms import MateriaPrimaForm,ProductosForm,ProveedoresForm
+
+def login(request):
+    return render(request, 'login.html')
+
+
+def registro(request):
+    return render(request, 'register.html')
 
 """
 Aqui van las views de Materia Prima
