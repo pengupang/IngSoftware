@@ -1,5 +1,5 @@
 from django import forms 
-from AppSoft.models import MateriaPrima,Proveedores,Productos,Usuario
+from AppSoft.models import MateriaPrima,Proveedores,Productos,Usuario,Compra
 
 class MateriaPrimaForm(forms.ModelForm):
     class Meta:
@@ -21,3 +21,9 @@ class UsuarioForm(forms.ModelForm):
     class Meta:
         model = Usuario
         fields='__all__'
+
+class CompraForm(forms.ModelForm):
+    class Meta:
+        model = Compra
+        fields='__all__'
+        

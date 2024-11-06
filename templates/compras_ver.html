@@ -1,0 +1,46 @@
+{%include 'header.html'%}
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link active" aria-current="page" href="../materiaVer/">ver</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="../materiaCrear/">Crear</a>
+  </li>
+</ul>
+<div class="container mt-5">
+<div class="alert alert-primary display-1">{{titulo}}</div>
+{%if materia%}
+         <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Nombre</th>
+                    <th>Unidad</th>
+                    <th>Estado</th>
+                    <th colspan="3">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {%for mat in materia%}
+                <tr>
+                    <td>{{mat.id}}</td>
+                    <td>{{mat.nombre}}</td>
+                    <td>{{mat.unidadMedida}}</td>
+                    <td>{{mat.estadoMateria}}</td>
+                
+                    <td>
+                        <a href="../materiaActualizar/{{mat.id}}"
+                          class='btn btn-info'><i class="bi bi-feather"></i>
+                       </a>
+                    </td>
+                   
+                </tr>
+                {%endfor%}
+            </tbody>
+         </table>
+        {%else%}
+            <div class="alert alert-info">No Hay Compras!!!!</div>
+        {%endif%}
+</div>
+
+{%include 'footer.html'%}

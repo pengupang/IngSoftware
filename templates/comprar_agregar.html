@@ -1,0 +1,50 @@
+{%include 'header.html'%}
+<ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a class="nav-link " href="../materiaVer/">ver</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link active"aria-current="page" href="../materiaCrear/">Crear</a>
+    </li>
+  </ul>
+<div class="container mt-5">
+    <div class="alert alert-primary display-1">{{titulo}}</div>
+    <form method="POST" action="#">
+      {% csrf_token %}
+      <div class="mb-3">
+          {{ form.proveedor.label_tag }}
+          {{ form.proveedor }}  
+      </div>
+      <div class="mb-3">
+          <label for="orden" class="form-label">Orden de compra</label>
+          <input type="text" class="form-control" id="orden" name="orden" value="{{ next_id }}" placeholder="N° Orden de compra" readonly required>
+      </div>
+      <div class="mb-3">
+              <div class="row g-3 align-items-end producto-item">
+             
+                
+                  <div class="col-md-6">
+                      <div class="form-group">
+                          <label>Materia Prima:</label>
+                          {{form.materia}}
+                      </div>
+               
+              </div>
+                  <div class="col-md-2">
+                      <label for="id_precio" class="form-label">Lote</label>
+                      <input type="number" class="form-control" name="lote" id="id_lote" value="0" min="0" >
+                  </div>
+                  <div class="col-md-2">
+                      <label for="id_cantidad" class="form-label">Cantidad</label>
+                      <input type="number" class="form-control" name="cantidad" value="1" min="1" id="id_cantidad">
+                  </div>
+   
+          
+                  <div class="mt-4">
+                      <button type="submit" class="btn btn-primary">Agregar</button>
+                  </div>
+              </div>
+          </div>
+          </form>
+</div>
+{%include 'footer.html'%}

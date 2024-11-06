@@ -21,6 +21,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('login/', views.login),
     path('registro/', views.registro),
+    path('comprasVer/',views.compras_Ver),
+    path('comprasAgregar/',views.compra_agregar),
     path('materiaVer/',views.materiaVer),
     path('materiaCrear/',views.materiaCrear),
     path('materiaActualizar/<int:id>',views.materiaActualizar),

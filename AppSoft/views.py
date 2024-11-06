@@ -1,7 +1,7 @@
-from django.shortcuts import render
-from AppSoft.models import MateriaPrima,Productos,Proveedores
+from django.shortcuts import render,redirect
+from AppSoft.models import MateriaPrima,Productos,Proveedores,Compra
 from . import forms
-from .forms import MateriaPrimaForm,ProductosForm,ProveedoresForm
+from .forms import MateriaPrimaForm,ProductosForm,ProveedoresForm,CompraForm
 
 def login(request):
     return render(request, 'login.html')
@@ -96,6 +96,42 @@ def proveedoresDeshabilitar(request,id):
        proveedores.delete()
      data={"proveedores":proveedores}
      return render(request,'proveedoresCrear.html',data)
+
 """
 Aqui van las views de Usuarios
 """
+
+"""
+Aqui van las views de ingresos
+"""
+def compra_agregar(request):
+    # sirve para marcar cual es la id siguiente al momento de renderizar el page
+    last_compra = Compra.objects.order_by('id').last()
+    next_id = last_compra.id + 1 if last_compra else 1
+
+    if request.method == "POST":
+        #comprobacion extra en caso de que se suban productos al mismo tiempo, si suena tonto pero pasa 
+        if next_id == Compra.objects.order_by('id').last().id:
+            next_id+=1
+        form = CompraForm(request.POST)
+        if form.is_valid():
+            form.instance.orden = next_id
+            form.save()
+            return redirect('compras_ver')
+
+    form = CompraForm()
+
+    materia = MateriaPrima.objects.all()
+
+    context = {
+        'form': form,
+        'titulo': 'Agregar Compra',
+        'materia': materia,
+        'next_id': next_id,
+    }
+    return render(request, 'comprar_agregar.html', context)
+
+def compras_Ver (request):
+    compras=Compra.objects.all()
+    data = {'compras' : compras, 'titulo':'Tabla Compras'}
+    return render (request,'compras_ver.html',data)
