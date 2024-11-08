@@ -5,7 +5,7 @@ import datetime
 class MateriaPrima(models.Model):
     nombre = models.CharField(max_length=60)
     unidadMedida= models.CharField(max_length=5)
-    estadoMateria = models.BooleanField()
+    estadoMateria = models.BooleanField(default=True)
     def __str__(self):
         return self.nombre
 

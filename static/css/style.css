@@ -1,0 +1,51 @@
+/* Colores generales */
+:root {
+    --navbar-bg-color: #343a40; /* Fondo de la navbar oscuro */
+    --navbar-link-color: #f8f9fa; /* Color de los enlaces (blanco suave) */
+    --navbar-link-hover-color: #61dafb; /* Color de los enlaces al pasar el ratón (azul suave) */
+    --navbar-active-link-color: #28a745; /* Color del enlace activo (verde suave) */
+    --navbar-border-color: #495057; /* Color de borde sutil, un gris más suave */
+    
+    --container-bg-color: #f9f9f9; /* Fondo general del contenedor, blanco roto */
+}
+
+/* Fondo general del contenedor */
+.container {
+    background-color: var(--container-bg-color);
+    padding: 20px; /* Espaciado interno */
+    border-radius: 8px; /* Bordes redondeados */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
+
+/* Navbar */
+nav.navbar {
+    background-color: var(--navbar-bg-color) !important; /* Fondo oscuro para navbar */
+    border-bottom: 2px solid var(--navbar-border-color) !important;
+}
+
+/* Enlaces dentro del navbar */
+.navbar .nav-link {
+    color: var(--navbar-link-color) !important; /* Color de los enlaces */
+    font-size: 1.2rem !important; /* Tamaño de fuente ajustado */
+    font-weight: bold;
+}
+
+/* Hover de enlaces dentro del navbar */
+.navbar .nav-link:hover {
+    color: var(--navbar-link-hover-color) !important; /* Color al pasar el ratón */
+}
+
+/* Enlace activo dentro del navbar */
+.navbar .nav-link.active {
+    color: var(--navbar-active-link-color) !important; /* Color del enlace activo */
+}
+
+/* Ajustes para los items del navbar */
+.navbar .nav-item {
+    font-size: 1rem !important; /* Tamaño de fuente de los items */
+}
+
+/* Agregar un efecto de transición a los enlaces */
+.navbar .nav-link, .navbar .nav-item {
+    transition: color 0.3s ease;
+}

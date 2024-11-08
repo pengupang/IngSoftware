@@ -5,6 +5,7 @@ class MateriaPrimaForm(forms.ModelForm):
     class Meta:
         model = MateriaPrima
         fields='__all__'
+       
 
 class ProveedoresForm(forms.ModelForm):
     class Meta:
