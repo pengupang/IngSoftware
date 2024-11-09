@@ -1,0 +1,31 @@
+{%include 'header.html'%}
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Usuario</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+</head>
+<body>
+
+<!-- Barra de navegación con pestañas -->
+<ul class="nav nav-tabs">
+    <li class="nav-item">
+        <a class="nav-link" href="../lista_usuarios">Ver</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link active" aria-current="page" href="../crear_usuario">Crear</a>
+    </li>
+</ul>
+
+<div class="container mt-5">
+    <div class="alert alert-primary display-1">{{titulo}}</div>
+    <form method="POST">
+        {{form.as_p}}
+        {% csrf_token %}
+        <input type="submit" value="Crear">
+    </form>
+</div>
+</html>
