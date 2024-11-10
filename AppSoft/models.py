@@ -24,7 +24,7 @@ class Usuario (models.Model):
     nombre= models.CharField(max_length=60)
     contraseña = models.CharField(max_length=10)
     rol = models.CharField(max_length=30)
-    estadoUsuario = models.BooleanField()
+    estadoUsuario = models.CharField(max_length=25) #Lo arregle para que funcioné de mejor manera el estado y no tener que investigar más de la cuenta
 
 class Compra (models.Model):
     fecha = models.DateField(default=datetime.date.today)

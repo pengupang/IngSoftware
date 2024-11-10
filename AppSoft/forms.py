@@ -5,7 +5,23 @@ class MateriaPrimaForm(forms.ModelForm):
     class Meta:
         model = MateriaPrima
         fields='__all__'
-       
+
+class Usuariocuentaform(forms.ModelForm):
+    class Meta:
+        model = Usuario
+        fields = ['nombre', 'rol','contraseña', 'estadoUsuario']
+
+    def clean_nombre(self):
+        nombre= self.cleaned_data.get('nombre')
+        if Usuario.objects.filter(nombre=nombre).exists():
+             raise forms.ValidationError('utilize otro nombre')
+        return nombre    
+    
+    def clean_tipo(self):
+        rol = self.cleaned_data.get('tipo')
+        if rol not in ['administrador', 'bodeguero']:
+            raise forms.ValidationError('Tipo de usuario inválido.')
+        return rol       
 
 class ProveedoresForm(forms.ModelForm):
     class Meta:

@@ -19,23 +19,23 @@ from django.urls import path
 from AppSoft import views
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('login/', views.login),
-    path('registro/', views.registro),
+    path('login/', views.login, name='login'),
+    path('registro/', views.crearcuenta, name='register'),
     path('comprasVer/',views.compras_Ver),
     path('comprasAgregar/',views.compra_agregar),
-    path('materiaVer/',views.materiaVer),
+    path('materiaVer/',views.materiaVer, name='materiaVer'),
     path('materiaCrear/',views.materiaCrear),
     path('materiaActualizar/<int:id>',views.materiaActualizar),
     path('productosVer/',views.productosVer),
-    path('productosCrear/',views.productosCrear),
+    path('productosCrear/',views.productosCrear, name='productosCrear'),
     path('productosActualizar/<int:id>', views.productosActualizar),
     path('proveedoresVer/', views.proveedoresVer),
     path('proveedoresCrear/', views.proveedoresCrear),
     path('proveedoresActualizar/<int:id>', views.proveedoresActualizar),
     path('proveedoresDeshabilitar/', views.proveedoresDeshabilitar),
-    path('lista_usuarios/', views.lista_usuarios),
-    path('crear_usuario/', views.crear_usuario),
-    path('actualizar_usuario/<int:id>', views.actualizar_usuario),
-    path('deshabilitar_usuario/<int:id>',views.deshabilitar_usuario)
+    #path('lista_usuarios/', views.lista_usuarios),
+    #path('crear_usuario/', views.crear_usuario),
+    #path('actualizar_usuario/<int:id>', views.actualizar_usuario),
+    #path('deshabilitar_usuario/<int:id>',views.deshabilitar_usuario)
     
 ]
