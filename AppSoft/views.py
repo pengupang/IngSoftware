@@ -74,6 +74,7 @@ def productosCrear(request):
         form = ProductosForm(request.POST)
         if form.is_valid():
             form.save()
+            return redirect('../productosVer/')
     data = {'form' : form , 'titulo': 'Agregar Productos'}
     return render (request,'productosCrear.html',data)
 

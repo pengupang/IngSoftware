@@ -3,8 +3,9 @@
 <div class="container mt-5">
     <div class="alert alert-primary display-1">{{titulo}}</div>
     <form method="POST">
-        {{form.as_p}}
-        {% csrf_token %}
+      {% csrf_token %}
+      {{form.as_p}}
+        
         <input type="submit" value="Crear">
     </form>
     <div>

@@ -3,39 +3,46 @@
 <div class="container mt-5">
   
 <div class="alert alert-primary display-1">{{titulo}}</div>
-<div class="mb-3">
-  <a href="../productosCrear/" class="btn btn-success">
-      <i class="bi bi-plus-circle-fill"></i> Agregar Nuevo Producto
-  </a>
-</div>
-         <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Nombre</th>
-                    <th>Cantidad</th>
-                    <th>Estado</th>
-                    <th colspan="3">Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                {%for prod in productos%}
-                <tr>
-                    <td>{{prod.id}}</td>
-                    <td>{{prod.nombre}}</td>
-                    <td>{{prod.cantidad}}</td>
-                    <td>{{prod.estadoProducto}}</td>
-                
-                    <td>
-                        <a href="../productosActualizar/{{prod.id}}"
-                          class='btn btn-info'><i class="bi bi-pencil"></i>
-                       </a>
-                    </td>
-                   
-                </tr>
-                {%endfor%}
-            </tbody>
-         </table>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Nombre</th>
+            <th>Cantidad</th>
+            <th>Composicion</th>
+            <th>Estado</th>
+            <th colspan="3">Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for producto in productos %}
+        <tr>
+            <td>{{ producto.id }}</td>
+            <td>{{ producto.nombre }}</td>
+            <td>{{ producto.cantidad }}</td>
+            <td>
+                <ul>
+                    {% for materia in producto.composicion.all %}
+                    <li>{{ materia.nombre }} - {{ materia.cantidad }} {{ materia.unidadMedida }}</li>
+                    {% endfor %}
+                </ul>
+            </td>
+            <td>{{ producto.estadoProducto }}</td>
+            <td>
+                <a href="../proveedoresActualizar/{{pro.id}}"
+                  class='btn btn-info'><i class="bi bi-pencil">Editar</i>
+               </a>
+            </td>
+            <td>
+                <a href="../proveedoresDeshabilitar/{{pro.id}}"
+                  class='btn btn-danger'><i class="bi bi-trash">Deshabilitar</i>
+               </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
         
 </div>
 </div>

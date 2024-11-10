@@ -37,13 +37,16 @@ class ProveedoresForm(forms.ModelForm):
 class ProductosForm(forms.ModelForm):
     class Meta:
         model = Productos
-        fields='__all__'
+        fields= ['nombre','cantidad','estadoProducto','composicion']
         widgets = {
             'nombre' : forms.TextInput(attrs={'class': 'form-control'}),
             'cantidad' : forms.TextInput(attrs={'class': 'form-control'}),
             'estadoProducto' : forms.TextInput(attrs={'class': 'form-control'}),
-                                       
         }
+    composicion =  forms.ModelMultipleChoiceField(
+        queryset=MateriaPrima.objects.all(),  
+        widget=forms.CheckboxSelectMultiple, 
+        required=True  )                         
 
 class UsuarioForm(forms.ModelForm):
     class Meta:
