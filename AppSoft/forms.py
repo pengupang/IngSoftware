@@ -27,12 +27,23 @@ class ProveedoresForm(forms.ModelForm):
     class Meta:
         model = Proveedores
         fields='__all__'
+        widgets = {
+            'nombre' : forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nombre del Proveedor'}),
+            'contacto' : forms.TextInput(attrs= {'class':'form-control','placeholder' : 'Contacto' })
+
+        }
 
 
 class ProductosForm(forms.ModelForm):
     class Meta:
         model = Productos
         fields='__all__'
+        widgets = {
+            'nombre' : forms.TextInput(attrs={'class': 'form-control'}),
+            'cantidad' : forms.TextInput(attrs={'class': 'form-control'}),
+            'estadoProducto' : forms.TextInput(attrs={'class': 'form-control'}),
+                                       
+        }
 
 class UsuarioForm(forms.ModelForm):
     class Meta:
@@ -42,5 +53,11 @@ class UsuarioForm(forms.ModelForm):
 class CompraForm(forms.ModelForm):
     class Meta:
         model = Compra
-        fields='__all__'
-        
+        fields = ['fecha', 'proveedor', 'lote', 'cantidad']  # Excluir 'materia' para no mostrarlo
+
+        widgets = {
+            'fecha': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+            'proveedor': forms.Select(attrs={'class': 'form-select', 'required': 'required'}),
+            'lote': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Precio'}),
+            'cantidad': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Cantidad', 'min': 1}),
+        }

@@ -4,6 +4,7 @@ import datetime
 # Create your models here.
 class MateriaPrima(models.Model):
     nombre = models.CharField(max_length=60)
+    cantidad = models.FloatField()
     unidadMedida= models.CharField(max_length=5)
     estadoMateria = models.BooleanField(default=True)
     def __str__(self):
@@ -26,11 +27,12 @@ class Usuario (models.Model):
     rol = models.CharField(max_length=30)
     estadoUsuario = models.CharField(max_length=25) #Lo arregle para que funcioné de mejor manera el estado y no tener que investigar más de la cuenta
 
-class Compra (models.Model):
-    fecha = models.DateField(default=datetime.date.today)
-    proveedor = models.ForeignKey(Proveedores,on_delete=models.CASCADE, related_name='proveedor_compras')
-    lote = models.IntegerField()
-    cantidad = models.IntegerField()
-    materia = models.ForeignKey(MateriaPrima,on_delete=models.CASCADE , related_name= 'materia_compras')
-    def __str__(self) :
-        return f"{self.materia} - {self.proveedor.nombre}" 
+class Compra(models.Model):
+    fecha = models.DateField()
+    proveedor = models.ForeignKey(Proveedores, on_delete=models.CASCADE)
+    lote = models.DecimalField(max_digits=10, decimal_places=2)
+    cantidad = models.FloatField()
+    materia = models.ForeignKey(MateriaPrima, on_delete=models.CASCADE, blank=True, null=True)
+
+    def __str__(self):
+        return f"Compra {self.id} - {self.materia.nombre}"

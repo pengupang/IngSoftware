@@ -22,7 +22,7 @@ urlpatterns = [
     path('login/', views.login, name='login'),
     path('registro/', views.crearcuenta, name='register'),
     path('comprasVer/',views.compras_Ver),
-    path('comprasAgregar/',views.compra_agregar),
+    path('comprasAgregar/<str:nombre>',views.compra_agregar),
     path('materiaVer/',views.materiaVer, name='materiaVer'),
     path('materiaCrear/',views.materiaCrear),
     path('materiaActualizar/<int:id>',views.materiaActualizar),
