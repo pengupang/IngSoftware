@@ -37,5 +37,7 @@ urlpatterns = [
     #path('crear_usuario/', views.crear_usuario),
     #path('actualizar_usuario/<int:id>', views.actualizar_usuario),
     #path('deshabilitar_usuario/<int:id>',views.deshabilitar_usuario)
+    path('bodegueroVer/',views.bodeguerosVer),
+    path('bodegueroCrear/',views.bodegueroCrear)
     
 ]

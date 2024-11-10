@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect,get_object_or_404
-from AppSoft.models import MateriaPrima,Productos,Proveedores,Compra, Usuario
+from AppSoft.models import MateriaPrima,Productos,Proveedores,Compra, Usuario, Bodeguero
 from . import forms
-from .forms import MateriaPrimaForm,ProductosForm,ProveedoresForm,CompraForm, Usuariocuentaform
+from .forms import MateriaPrimaForm,ProductosForm,ProveedoresForm,CompraForm, Usuariocuentaform, BodegueroForm
 
 def crearcuenta(request):
     if request.method == 'POST':
@@ -164,3 +164,18 @@ def compras_Ver (request):
     data = {'compras' : compras, 'titulo':'Tabla Compras'}
     return render (request,'compras_ver.html',data)
 
+
+
+def bodeguerosVer(request):
+    bodeguero=Bodeguero.objects.all()
+    data = {'boguederos' : bodeguero, 'titulo':'Tabla Boguederos'}
+    return render (request,'bodegueroVer.html',data)
+
+def bodegueroCrear(request):
+    form = BodegueroForm()
+    if request.method == 'POST':
+        form = BodegueroForm(request.POST)
+        if form.is_valid():
+            form.save()
+    data = {'form' : form , 'titulo': 'Agregar Bodeguero'}
+    return render (request,'bodegueroCrear.html',data)

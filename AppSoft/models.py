@@ -39,3 +39,10 @@ class Compra(models.Model):
 
     def __str__(self):
         return f"Compra {self.id} - {self.materia.nombre}"
+    
+
+class Bodeguero (models.Model):
+    nombre = models.CharField(max_length=50)
+    contacto = models.CharField(max_length=16) 
+    def __str__(self):
+        return self.nombre

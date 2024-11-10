@@ -1,5 +1,5 @@
 from django import forms 
-from AppSoft.models import MateriaPrima,Proveedores,Productos,Usuario,Compra
+from AppSoft.models import MateriaPrima,Proveedores,Productos,Usuario,Compra, Bodeguero
 
 class MateriaPrimaForm(forms.ModelForm):
     class Meta:
@@ -63,4 +63,14 @@ class CompraForm(forms.ModelForm):
             'proveedor': forms.Select(attrs={'class': 'form-select', 'required': 'required'}),
             'lote': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Precio'}),
             'cantidad': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Cantidad', 'min': 1}),
+        }
+
+class BodegueroForm(forms.ModelForm):
+    class Meta:
+        model = Bodeguero
+        fields='__all__'
+        widgets = {
+            'nombre' : forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nombre del Proveedor'}),
+            'contacto' : forms.TextInput(attrs= {'class':'form-control','placeholder' : 'Contacto' })
+
         }
