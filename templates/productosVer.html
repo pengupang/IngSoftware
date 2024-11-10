@@ -1,16 +1,13 @@
 {%include 'header.html'%}
 
-<ul class="nav nav-tabs">
-  <li class="nav-item">
-    <a class="nav-link active" aria-current="page" href="../productosVer/">ver</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" href="../productosCrear/">Crear</a>
-  </li>
-</ul>
-
 <div class="container mt-5">
+  
 <div class="alert alert-primary display-1">{{titulo}}</div>
+<div class="mb-3">
+  <a href="../productosCrear/" class="btn btn-success">
+      <i class="bi bi-plus-circle-fill"></i> Agregar Nuevo Producto
+  </a>
+</div>
          <table class="table table-striped">
             <thead>
                 <tr>

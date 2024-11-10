@@ -45,6 +45,7 @@ def materiaCrear(request):
         form = MateriaPrimaForm(request.POST)
         if form.is_valid():
             form.save()
+        return redirect('../materiaVer/')
     data = {'form' : form , 'titulo': 'Agregar Materia Prima'}
     return render (request,'materiaCrear.html',data)
 
