@@ -5,6 +5,9 @@
   <a href="../materiaCrear/" class="btn btn-success">
       <i class="bi bi-plus-circle-fill"></i> Agregar Nueva Materia
   </a>
+  <a href="../materiasDeshabilitadas/" class="btn btn-success">
+    <i class="bi bi-plus-circle-fill"></i> Materias Deshabilitadas
+</a>
 </div>
 {%if materia%}
          <table class="table table-striped">
@@ -37,6 +40,11 @@
                         class='btn btn-info'><i class="bi bi-plus-circle-fill"></i>
                      </a>
                   </td>
+                  <td>
+                    <a href="../materiaDeshabilitar/{{mat.id}}" class="btn btn-danger">
+                        Deshabilitar
+                    </a>
+                </td>
                    
                 </tr>
                 {%endfor%}

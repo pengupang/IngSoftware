@@ -35,7 +35,7 @@ def login(request):
 Aqui van las views de Materia Prima
 """
 def materiaVer (request):
-    materia=MateriaPrima.objects.all()
+    materia=MateriaPrima.objects.filter(estadoMateria=True)
     data = {'materia' : materia, 'titulo':'Tabla Materia Prima'}
     return render (request,'materiaVer.html',data)
 
@@ -59,6 +59,22 @@ def materiaActualizar(request,id):
     data={'form':form , 'titulo': 'Actualizar Materia Prima'}
     return render(request,'materiaCrear.html',data)
 
+def materiaDeshabilitar(request,id):
+     materia=MateriaPrima.objects.get(id=id)
+     materia.estadoMateria = False
+     materia.save()
+     return redirect('../materiaVer')
+
+def materiasDeshabilitadas(request):
+    materia=MateriaPrima.objects.filter(estadoMateria=False)
+    data = {'materia' : materia, 'titulo':'Tabla Materia Prima'}
+    return render (request,'materiaDeshabilitadas.html',data)
+
+def materiaHabilitar(request,id):
+    materia=MateriaPrima.objects.get(id=id)
+    materia.estadoMateria = True
+    materia.save()
+    return redirect('../materiasDeshabilitadas')
 
 """
 Aqui van las views de Productos
@@ -75,8 +91,8 @@ def productosCrear(request):
         if form.is_valid():
             form.save()
             return redirect('../productosVer/')
-    data = {'form' : form , 'titulo': 'Agregar Productos'}
-    return render (request,'productosCrear.html',data)
+    data = {'form': form, 'titulo': 'Agregar Productos'}
+    return render(request, 'productosCrear.html', data)
 
 def productosActualizar(request,id):
     producto = Productos.objects.get(id=id)

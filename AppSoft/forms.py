@@ -44,7 +44,7 @@ class ProductosForm(forms.ModelForm):
             'estadoProducto' : forms.TextInput(attrs={'class': 'form-control'}),
         }
     composicion =  forms.ModelMultipleChoiceField(
-        queryset=MateriaPrima.objects.all(),  
+        queryset=MateriaPrima.objects.filter(estadoMateria=True),  
         widget=forms.CheckboxSelectMultiple, 
         required=True  )                         
 

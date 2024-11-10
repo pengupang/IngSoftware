@@ -1,0 +1,38 @@
+{%include 'header.html'%}
+
+  <div class="container">
+    <div class="alert alert-primary display-1">{{titulo}}</div>
+    <a href="../materiaVer/" class="btn btn-success">
+        <i class="bi bi-plus-circle-fill"></i> Materias Habilitadas
+    </a>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Nombre</th>
+                    <th>Cantidad</th>
+                    <th>Unidad</th>
+                    <th>Estado</th>
+                    <th colspan="3">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {%for mat in materia%}
+                <tr>
+                    <td>{{mat.id}}</td>
+                    <td>{{mat.nombre}}</td>
+                    <td>{{mat.cantidad}}</td>
+                    <td>{{mat.unidadMedida}}</td>
+                    <td>{{mat.estadoMateria}}</td>
+                
+                        <td>
+                            <a href="../materiasHabilitar/{{mat.id}}" class="btn btn-success">
+                                Habilitar
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {%include 'footer.html'%}
