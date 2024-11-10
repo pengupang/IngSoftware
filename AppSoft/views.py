@@ -126,6 +126,36 @@ def proveedoresDeshabilitar(request,id):
 """
 Aqui van las views de Usuarios
 """
+def lista_usuarios(request):
+    usuarios = Usuario.objects.all()
+    data = {'usuarios' : usuarios, 'titulo':'Tabla Usuarios'}
+    return render(request, 'usuarios_ver.html',data)
+
+def crear_usuario(request):
+    form = Usuariocuentaform()
+    if request.method == 'POST':
+        form = Usuariocuentaform(request.POST)
+        if form.is_valid():
+            form.save()
+    data = {'form' : form , 'titulo': 'Agregar Usuario'}
+    return render(request, 'usuario_crear.html',data)
+
+def actualizar_usuario(request, id):
+    usuarios = Usuario.objects.get(id=id)
+    form= Usuariocuentaform(instance=usuarios)
+    if request.method == "POST": 
+        form=Usuariocuentaform(request.POST,instance=usuarios)
+        if form.is_valid():
+            form.save()
+    data={'form':form , 'titulo': 'Actualizar Usuarios'}
+    return render(request,'usuario_crear.html',data)
+
+def deshabilitar_usuario(request,id):
+     usuarios=Usuario.objects.get(id=id)
+     if request.method=="POST":
+       usuarios.delete()
+     data={"usuarios":usuarios}
+     return render(request,'usuario_crear.html',data)
 
 """
 Aqui van las views de ingresos

@@ -33,10 +33,10 @@ urlpatterns = [
     path('proveedoresCrear/', views.proveedoresCrear),
     path('proveedoresActualizar/<int:id>', views.proveedoresActualizar),
     path('proveedoresDeshabilitar/', views.proveedoresDeshabilitar),
-    #path('lista_usuarios/', views.lista_usuarios),
-    #path('crear_usuario/', views.crear_usuario),
-    #path('actualizar_usuario/<int:id>', views.actualizar_usuario),
-    #path('deshabilitar_usuario/<int:id>',views.deshabilitar_usuario)
+    path('lista_usuarios/', views.lista_usuarios),
+    path('crear_usuario/', views.crear_usuario),
+    path('actualizar_usuario/<int:id>', views.actualizar_usuario),
+    path('deshabilitar_usuario/<int:id>',views.deshabilitar_usuario),
     path('bodegueroVer/',views.bodeguerosVer),
     path('bodegueroCrear/',views.bodegueroCrear)
     
