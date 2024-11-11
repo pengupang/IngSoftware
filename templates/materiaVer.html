@@ -34,7 +34,7 @@
                 <tr>
                     <td>{{mat.id}}</td>
                     <td>{{mat.nombre}}</td>
-                    <td>{{mat.cantidad}}</td>
+                    <td class="cantidad">{{mat.cantidad}}</td>
                     <td>{{mat.unidadMedida}}</td>
                     <td>{{mat.estadoMateria}}</td>
                 
@@ -62,5 +62,22 @@
             <div class="alert alert-info">No Hay Materia Prima!!!!</div>
         {%endif%}
 </div>
+<script>
+      const umbralStock = 10;
+
+// Obtener todas las celdas de stock
+const celdasStock = document.querySelectorAll('.cantidad');
+
+// Recorremos las celdas y cambiamos el estilo si el stock es bajo
+celdasStock.forEach(celda => {
+    const cantidad = parseInt(celda.textContent);  // Obtener la cantidad como número
+
+    if (cantidad < umbralStock) {
+        celda.classList.add('bg-danger', 'text-white');  // Aplicar las clases de Bootstrap
+        celda.title = '¡Bajo stock!';  // Agregar un tooltip
+    }
+});
+
+</script>
 
 {%include 'footer.html'%}
