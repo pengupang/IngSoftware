@@ -1,5 +1,6 @@
 from django import forms 
-from AppSoft.models import MateriaPrima,Proveedores,Productos,Usuario,Compra, Bodeguero
+from django.forms import inlineformset_factory
+from AppSoft.models import MateriaPrima,Proveedores,Productos,Usuario,Compra, Bodeguero,ProductoMateria
 
 class MateriaPrimaForm(forms.ModelForm):
     class Meta:
@@ -37,17 +38,34 @@ class ProveedoresForm(forms.ModelForm):
 class ProductosForm(forms.ModelForm):
     class Meta:
         model = Productos
-        fields= ['nombre','cantidad','estadoProducto','composicion']
+        fields = ['nombre', 'cantidad', 'estadoProducto', 'composicion']
         widgets = {
-            'nombre' : forms.TextInput(attrs={'class': 'form-control'}),
-            'cantidad' : forms.TextInput(attrs={'class': 'form-control'}),
-            'estadoProducto' : forms.TextInput(attrs={'class': 'form-control'}),
+            'nombre': forms.TextInput(attrs={'class': 'form-control'}),
+            'cantidad': forms.NumberInput(attrs={'class': 'form-control'}),
+            'estadoProducto': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
         }
-    composicion =  forms.ModelMultipleChoiceField(
-        queryset=MateriaPrima.objects.filter(estadoMateria=True),  
-        widget=forms.CheckboxSelectMultiple, 
-        required=True  )                         
 
+    composicion = forms.ModelMultipleChoiceField(
+        queryset=MateriaPrima.objects.filter(estadoMateria=True),
+        widget=forms.CheckboxSelectMultiple,
+        required=True
+    ) 
+
+
+class ProductoMateriaForm(forms.ModelForm):
+    class Meta:
+        model = ProductoMateria
+        fields = ['producto', 'materia', 'cantidad_usada']
+    
+    def clean_cantidad_usada(self):
+        cantidad = self.cleaned_data.get('cantidad_usada')
+        if cantidad is None or cantidad <= 0:
+            raise forms.ValidationError("La cantidad utilizada debe ser mayor que 0.")
+        return cantidad
+
+ProductoMateriaFormSet = inlineformset_factory(
+    Productos, ProductoMateria, form=ProductoMateriaForm, extra=1
+)
 class UsuarioForm(forms.ModelForm):
     class Meta:
         model = Usuario

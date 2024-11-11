@@ -4,7 +4,15 @@
     <div class="alert alert-primary display-1">{{titulo}}</div>
     <form method="POST">
       {% csrf_token %}
-      {{form.as_p}}
+      {{ form.as_p }}
+    
+      <h3>Composición</h3>
+      {{ formset.management_form }}
+      {% for form in formset %}
+          <div>
+              {{ form.as_p }}
+        </div>
+    {% endfor %}
         
         <input type="submit" value="Crear">
     </form>

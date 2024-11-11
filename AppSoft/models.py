@@ -16,13 +16,20 @@ class Proveedores (models.Model):
     def __str__(self):
         return self.nombre
 
-class Productos (models.Model):
+    
+class Productos(models.Model):
     nombre = models.CharField(max_length=60)
     cantidad = models.IntegerField()
-    composicion = models.ManyToManyField(MateriaPrima,related_name='productos')
+    composicion = models.ManyToManyField('MateriaPrima', through='ProductoMateria', related_name='productos')
     estadoProducto = models.BooleanField(default=True)
+
     def __str__(self):
         return self.nombre
+
+class ProductoMateria(models.Model):
+    producto = models.ForeignKey(Productos, on_delete=models.CASCADE)
+    materia = models.ForeignKey(MateriaPrima, on_delete=models.CASCADE)
+    cantidad_usada = models.FloatField(default=1)
 
 class Usuario (models.Model):
     nombre= models.CharField(max_length=60)

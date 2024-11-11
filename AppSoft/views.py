@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect,get_object_or_404
-from AppSoft.models import MateriaPrima,Productos,Proveedores,Compra, Usuario, Bodeguero
+from AppSoft.models import MateriaPrima,Productos,Proveedores,Compra, Usuario, Bodeguero, ProductoMateria
 from . import forms
-from .forms import MateriaPrimaForm,ProductosForm,ProveedoresForm,CompraForm, Usuariocuentaform, BodegueroForm
+from .forms import MateriaPrimaForm,ProductosForm,ProveedoresForm,CompraForm, Usuariocuentaform, BodegueroForm,ProductoMateriaFormSet
 
 def crearcuenta(request):
     if request.method == 'POST':
@@ -101,14 +101,47 @@ def productosVer (request):
     return render (request,'productosVer.html',data)
 
 def productosCrear(request):
+    # Inicializar form y formset
     form = ProductosForm()
+    formset = ProductoMateriaFormSet()
+
     if request.method == 'POST':
         form = ProductosForm(request.POST)
-        if form.is_valid():
-            form.save()
+        formset = ProductoMateriaFormSet(request.POST)
+
+        # Validar los formularios
+        if form.is_valid() and formset.is_valid():
+            producto = form.save()  # Guardar el producto
+
+            # Procesar los formularios de la relación Producto-Materia Prima
+            for producto_materia_form in formset:
+                if producto_materia_form.is_valid():
+                    producto_materia = producto_materia_form.save(commit=False)
+                    producto_materia.producto = producto  # Asignar el producto
+
+                    # Asegurarse de que cantidad_usada es válida
+                    if producto_materia.cantidad_usada <= 0:
+                        formset.add_error(None, "La cantidad usada debe ser mayor que 0.")
+                        return render(request, 'productosCrear.html', {'form': form, 'formset': formset, 'titulo': 'Agregar Producto'})
+
+                    producto_materia.save()  # Guardar la relación Producto-Materia Prima
+
+                    # Actualizar la cantidad de materia prima
+                    materia_prima = producto_materia.materia
+                    if materia_prima.cantidad >= producto_materia.cantidad_usada:
+                        materia_prima.cantidad -= producto_materia.cantidad_usada
+                        materia_prima.save()
+                    else:
+                        formset.add_error(None, f"No hay suficiente {materia_prima.nombre} en inventario.")
+                        return render(request, 'productosCrear.html', {'form': form, 'formset': formset, 'titulo': 'Agregar Producto'})
+
             return redirect('../productosVer/')
-    data = {'form': form, 'titulo': 'Agregar Productos'}
-    return render(request, 'productosCrear.html', data)
+        else:
+            # Si los formularios no son válidos, mostrar los errores
+            return render(request, 'productosCrear.html', {'form': form, 'formset': formset, 'titulo': 'Agregar Producto'})
+    
+    # Si es una solicitud GET, inicializamos los formularios
+    return render(request, 'productosCrear.html', {'form': form, 'formset': formset, 'titulo': 'Agregar Producto'})
 
 def productosActualizar(request,id):
     producto = Productos.objects.get(id=id)
