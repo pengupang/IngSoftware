@@ -3,9 +3,17 @@ import datetime
 
 # Create your models here.
 class MateriaPrima(models.Model):
+    UNIDAD_MEDIDA = [
+        ('kg', 'Kilogramo'),
+        ('g', 'Gramo'),
+        ('l', 'Litro'),
+        ('ml', 'Mililitro'),
+        # Agrega más opciones según tus necesidades
+    ]
+    
     nombre = models.CharField(max_length=60)
     cantidad = models.FloatField()
-    unidadMedida= models.CharField(max_length=5)
+    unidadMedida= models.CharField(max_length=5,choices=UNIDAD_MEDIDA)
     estadoMateria = models.BooleanField(default=True)
     def __str__(self):
         return self.nombre

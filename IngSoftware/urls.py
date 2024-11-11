@@ -24,7 +24,6 @@ urlpatterns = [
     path('comprasVer/',views.compras_Ver),
     path('comprasAgregar/<str:nombre>',views.compra_agregar),
     path('materiaVer/',views.materiaVer, name='materiaVer'),
-    path('materiaVerBodeguero', views.materiaVerBodeguero, name='materiaVerBodeguero'),
     path('materiaCrear/',views.materiaCrear),
     path('materiaActualizar/<int:id>',views.materiaActualizar),
     path('materiaDeshabilitar/<int:id>',views.materiaDeshabilitar),
@@ -41,8 +40,15 @@ urlpatterns = [
     path('crear_usuario/', views.crear_usuario),
     path('actualizar_usuario/<int:id>', views.actualizar_usuario),
     path('deshabilitar_usuario/<int:id>',views.deshabilitar_usuario),
+    
+    
     path('bodegueroVer/',views.bodeguerosVer),
     path('bodegueroCrear/',views.bodegueroCrear),
     path('materiaCrearBodeguero/', views.materiaCrearBodeguero),
+    path('materiaVerBodeguero/', views.materiaVerBodeguero, name='materiaVerBodeguero'),
+    path('compras_bodeguero/<str:nombre>',views.compra_agregarBodeguero),
+    path('productos_bodeguero',views.productosVerBodeguero),
+    path('proveedores_bodeguero/',views.proveedoresVerBodeguero),
+    
     
 ]

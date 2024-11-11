@@ -50,8 +50,13 @@ def materiaCrear(request):
     if request.method == 'POST':
         form = MateriaPrimaForm(request.POST)
         if form.is_valid():
-            form.save()
-        return redirect('../materiaVer/')
+            nombre_materia = form.cleaned_data.get('nombre')
+            if MateriaPrima.objects.filter(nombre=nombre_materia).exists():
+                form.add_error('nombre', 'Esta materia prima ya existe.')
+            else:
+                MateriaPrima.cantidad=0
+                form.save()
+                return redirect('../materiaVer/')
     data = {'form' : form , 'titulo': 'Agregar Materia Prima'}
     return render (request,'materiaCrear.html',data)
 
@@ -60,10 +65,22 @@ def materiaCrearBodeguero(request):
     if request.method == 'POST':
         form = MateriaPrimaForm(request.POST)
         if form.is_valid():
-            form.save()
-        return redirect('../materiaVer/')
-    data = {'form' : form , 'titulo': 'Agregar Materia Prima'}
-    return render (request,'materiaCrear-bodeguero.html',data)
+            nombre_materia = form.cleaned_data.get('nombre')
+            if MateriaPrima.objects.filter(nombre=nombre_materia).exists():
+                form.add_error('nombre', 'Esta materia prima ya existe.')
+                print("La materia prima ya existe en la base de datos.")
+            else:
+                nueva_materia = form.save(commit=False)
+                nueva_materia.estadoMateria = True
+                nueva_materia.cantidad = 0
+                nueva_materia.save()
+                print("Materia prima creada con éxito.")
+                return redirect('../materiaVerBodeguero/')
+        else:
+            print("Errores en el formulario:", form.errors)
+                
+    data = {'form': form, 'titulo': 'Agregar Materia Prima'}
+    return render(request, 'materiaCrear-bodeguero.html', data)
 
 def materiaActualizar(request,id):
     materia = MateriaPrima.objects.get(id=id)
@@ -143,6 +160,12 @@ def productosCrear(request):
     # Si es una solicitud GET, inicializamos los formularios
     return render(request, 'productosCrear.html', {'form': form, 'formset': formset, 'titulo': 'Agregar Producto'})
 
+def productosVerBodeguero(request):
+    productos=Productos.objects.all()
+    data = {'productos' : productos, 'titulo':'Tabla Productos'}
+    return render (request,'productos_bodeguero.html',data)
+
+
 def productosActualizar(request,id):
     producto = Productos.objects.get(id=id)
     form= ProductosForm(instance=producto)
@@ -161,6 +184,11 @@ def proveedoresVer(request):
     proveedores=Proveedores.objects.all()
     data = {'proveedores' : proveedores, 'titulo':'Tabla Proveedores'}
     return render (request,'proveedoresVer.html',data)
+
+def proveedoresVerBodeguero(request):
+    proveedores=Proveedores.objects.all()
+    data = {'proveedores' : proveedores, 'titulo':'Tabla Proveedores'}
+    return render (request,'proveedores_bodeguero.html',data)
 
 def proveedoresCrear(request):
     form = ProveedoresForm()
@@ -253,11 +281,42 @@ def compra_agregar(request, nombre):
     }
     return render(request, 'comprar_agregar.html', context)
 
+def compra_agregarBodeguero(request, nombre):
+    materia = get_object_or_404(MateriaPrima, nombre=nombre)  
+
+    if request.method == 'POST':
+        form = CompraForm(request.POST)
+        if form.is_valid():
+            compra = form.save(commit=False)
+            compra.materia = materia 
+            compra.save()
+            
+            compras_previas = Compra.objects.filter(materia=materia)
+            total_compras = sum(compra.cantidad for compra in compras_previas)
+            materia.cantidad =total_compras
+            materia.save()
+            return redirect('../../materiaVerBodeguero/')
+        else:
+            print("Formulario no válido:", form.errors)
+    else:
+        form = CompraForm()
+
+    context = {
+        'form': form,
+        'titulo': 'Agregar Compra',
+        'next_id': Compra.objects.count() + 1,  
+        'nomMateria': materia,  
+    }
+    return render(request, 'compras_bodeguero.html', context)
+
 
 def compras_Ver (request):
     compras=Compra.objects.all()
     data = {'compras' : compras, 'titulo':'Tabla Compras'}
     return render (request,'compras_ver.html',data)
+
+
+
 
 def bodeguerosVer(request):
     bodeguero=Bodeguero.objects.all()

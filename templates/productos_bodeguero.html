@@ -3,11 +3,7 @@
 <div class="container mt-5">
   
 <div class="alert alert-primary display-1">{{titulo}}</div>
-<div class="mb-3">
-    <a href="../productosCrear/" class="btn btn-success">
-        <i class="bi bi-plus-circle-fill"></i> Agregar Nuevo Producto
-    </a>
-  </div>
+
 <table class="table table-striped">
     <thead>
         <tr>
@@ -16,7 +12,7 @@
             <th>Cantidad</th>
             <th>Composicion</th>
             <th>Estado</th>
-            <th colspan="3">Acciones</th>
+            
         </tr>
     </thead>
     <tbody>
@@ -33,11 +29,6 @@
                 </ul>
             </td>
             <td>{{ producto.estadoProducto }}</td>
-            <td>
-                <a href="../productosActualizar/{{producto.id}}"
-                  class='btn btn-info'><i class="bi bi-pencil">Editar</i>
-               </a>
-            </td>
            
         </tr>
         {% endfor %}

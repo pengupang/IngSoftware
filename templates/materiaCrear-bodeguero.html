@@ -2,12 +2,30 @@
 <div class="container mt-5">
     <div class="alert alert-primary display-1">{{titulo}}</div>
     <form method="POST">
-        {{form.as_p}}
         {% csrf_token %}
+       
+        <div class="mb-3">
+          
+          {{ form.nombre.label_tag }}
+          
+          {{ form.nombre }}  
+      </div>
+      {% if form.nombre.errors %}
+      <div class="text-danger">
+          {{ form.nombre.errors.0 }}
+      </div>
+  {% endif %}
+      <div class="mb-3">
+          
+        {{ form.unidadMedida.label_tag }} 
+        {{ form.unidadMedida }}  
+    </div>
+        <input type="hidden" name="cantidad" value="0">
+        <input type="hidden" name="estado" value="True"> 
         <input type="submit" value="Crear">
     </form>
     <div>
-      <a href="../materiaVer/" class="btn btn-info">Volver</a>
+      <a href="../materiaVerBodeguero/" class="btn btn-info">Volver</a>
     </div>
 </div>
 {%include 'footer.html'%}
