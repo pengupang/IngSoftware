@@ -24,6 +24,7 @@ urlpatterns = [
     path('comprasVer/',views.compras_Ver),
     path('comprasAgregar/<str:nombre>',views.compra_agregar),
     path('materiaVer/',views.materiaVer, name='materiaVer'),
+    path('materiaVerBodeguero', views.materiaVerBodeguero, name='materiaVerBodeguero'),
     path('materiaCrear/',views.materiaCrear),
     path('materiaActualizar/<int:id>',views.materiaActualizar),
     path('materiaDeshabilitar/<int:id>',views.materiaDeshabilitar),
@@ -41,6 +42,7 @@ urlpatterns = [
     path('actualizar_usuario/<int:id>', views.actualizar_usuario),
     path('deshabilitar_usuario/<int:id>',views.deshabilitar_usuario),
     path('bodegueroVer/',views.bodeguerosVer),
-    path('bodegueroCrear/',views.bodegueroCrear)
+    path('bodegueroCrear/',views.bodegueroCrear),
+    path('materiaCrearBodeguero/', views.materiaCrearBodeguero),
     
 ]

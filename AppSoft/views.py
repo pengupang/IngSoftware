@@ -26,7 +26,7 @@ def login(request):
             if usuario.rol == 'administrador':
                 return redirect('productosCrear')  # Redirigir a la URL 'administrador'
             elif usuario.rol=='bodeguero':
-                return redirect('materiaVer')#lo mismo pero para el repartidor
+                return redirect('materiaVerBodeguero')#lo mismo pero para el bodeguero
         else:
             return render(request, 'login.html', {'error': 'Usuario inválido'})
     return render(request, 'login.html')
@@ -34,10 +34,16 @@ def login(request):
 """
 Aqui van las views de Materia Prima
 """
+
 def materiaVer (request):
     materia=MateriaPrima.objects.filter(estadoMateria=True)
     data = {'materia' : materia, 'titulo':'Tabla Materia Prima'}
     return render (request,'materiaVer.html',data)
+
+def materiaVerBodeguero (request):
+    materia=MateriaPrima.objects.filter(estadoMateria=True)
+    data = {'materia' : materia, 'titulo':'Tabla Materia Prima'}
+    return render (request,'materia_bodeguero.html',data)
 
 def materiaCrear(request):
     form = MateriaPrimaForm()
@@ -48,6 +54,16 @@ def materiaCrear(request):
         return redirect('../materiaVer/')
     data = {'form' : form , 'titulo': 'Agregar Materia Prima'}
     return render (request,'materiaCrear.html',data)
+
+def materiaCrearBodeguero(request):
+    form = MateriaPrimaForm()
+    if request.method == 'POST':
+        form = MateriaPrimaForm(request.POST)
+        if form.is_valid():
+            form.save()
+        return redirect('../materiaVer/')
+    data = {'form' : form , 'titulo': 'Agregar Materia Prima'}
+    return render (request,'materiaCrear-bodeguero.html',data)
 
 def materiaActualizar(request,id):
     materia = MateriaPrima.objects.get(id=id)
@@ -209,8 +225,6 @@ def compras_Ver (request):
     compras=Compra.objects.all()
     data = {'compras' : compras, 'titulo':'Tabla Compras'}
     return render (request,'compras_ver.html',data)
-
-
 
 def bodeguerosVer(request):
     bodeguero=Bodeguero.objects.all()
