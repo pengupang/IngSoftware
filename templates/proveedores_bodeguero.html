@@ -6,9 +6,7 @@
   <a href="../proveedoresCrear/" class="btn btn-success">
       <i class="bi bi-plus-circle-fill"></i> Agregar Nuevo Proveedor
   </a>
-  <a href="#" class="btn btn-success">
-    <i class="bi bi-plus-circle-fill"></i> Proveedores Deshabilitados
-</a>
+  
 </div>
 {%if proveedores%}
          <table class="table table-striped">
@@ -32,11 +30,7 @@
                           class='btn btn-info'><i class="bi bi-pencil">Editar</i>
                        </a>
                     </td>
-                    <td>
-                        <a href="../proveedoresDeshabilitar/{{pro.id}}"
-                          class='btn btn-danger'><i class="bi bi-trash">Deshabilitar</i>
-                       </a>
-                    </td>
+                    
                     
                    
                 </tr>
