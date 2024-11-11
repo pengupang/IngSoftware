@@ -1,0 +1,40 @@
+{%include 'header_bodeguero.html'%}
+<div class="container mt-5">
+  <div class="alert alert-primary display-1">{{titulo}}</div>
+  <form method="POST" action="#">
+    {% csrf_token %}
+    <div class="mb-3">
+      <label for="fecha" class="form-label">Fecha</label>
+      {{ form.fecha }}
+    </div>
+    <div class="mb-3">
+        {{ form.proveedor.label_tag }}
+        {{ form.proveedor }}  
+    </div>
+    <div class="mb-3">
+        <label for="orden" class="form-label">Orden de compra</label>
+        <input type="text" class="form-control" id="orden" name="orden" value="{{ next_id }}" readonly required>
+    </div>
+    <div class="mb-3">
+        <label>Materia:</label>
+        <!-- Campo oculto para enviar el ID de la materia -->
+        <input type="hidden" name="materia" value="{{ nomMateria.id }}">
+        <input type="text" class="form-control" value="{{ nomMateria.nombre }}" readonly>
+    </div>
+    <div class="mb-3">
+        <label for="id_precio" class="form-label">Lote</label>
+        {{ form.lote }}
+    </div>
+    <div class="mb-3">
+        <label for="id_cantidad" class="form-label">Cantidad</label>
+        {{ form.cantidad }}
+    </div>
+    <div class="mt-4">
+        <button type="submit" class="btn btn-primary">Agregar</button>
+    </div>
+  </form>
+  <div>
+  <a href="../materiaVer" class="btn btn-primary">volver</a>
+</div>
+</div>
+{%include 'footer.html'%}
