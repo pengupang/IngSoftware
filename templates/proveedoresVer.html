@@ -2,6 +2,14 @@
 
 <div class="container mt-5">
 <div class="alert alert-primary display-1">{{titulo}}</div>
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+{% endif %}
 <div class="mb-3">
   <a href="../proveedoresCrear/" class="btn btn-success">
       <i class="bi bi-plus-circle-fill"></i> Agregar Nuevo Proveedor
@@ -26,6 +34,7 @@
                     <td>{{pro.id}}</td>
                     <td>{{pro.nombre}}</td>
                     <td>{{pro.contacto}}</td>
+                    <td>{{pro.estado}}</td>
                 
                     <td>
                         <a href="../proveedoresActualizar/{{pro.id}}"

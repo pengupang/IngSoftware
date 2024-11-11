@@ -12,11 +12,8 @@
     {% endfor %}
 {% endif %}
 <div class="mb-3">
-    <a href="../productosCrear/" class="btn btn-success">
-        <i class="bi bi-plus-circle-fill"></i> Agregar Nuevo Producto
-    </a>
-    <a href="../productosDeshabilitados/" class="btn btn-success">
-        <i class="bi bi-plus-circle-fill"></i> Materias Deshabilitadas
+    <a href="../productosVer/" class="btn btn-success">
+        <i class="bi bi-plus-circle-fill"></i> Materias Habilitadas
     </a>
   </div>
 <table class="table table-striped">
@@ -44,14 +41,10 @@
                 </ul>
             </td>
             <td>{{ producto.estadoProducto }}</td>
+    
             <td>
-                <a href="../productosActualizar/{{producto.id}}"
-                  class='btn btn-info'><i class="bi bi-pencil">Editar</i>
-               </a>
-            </td>
-            <td>
-                <a href="../productosDeshabilitar/{{producto.id}}"
-                  class='btn btn-danger'><i class="bi bi-trash">Deshabilitar</i>
+                <a href="../productosHabilitar/{{producto.id}}"
+                  class='btn btn-danger'><i class="bi bi-trash">Habilitar</i>
                </a>
             </td>
         </tr>

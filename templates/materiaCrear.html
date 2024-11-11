@@ -2,10 +2,36 @@
 <div class="container mt-5">
     <div class="alert alert-primary display-1">{{titulo}}</div>
     <form method="POST">
-        {{form.as_p}}
-        {% csrf_token %}
-        <input type="submit" value="Crear">
-    </form>
+      {% csrf_token %}
+      {% if messages %}
+      {% for message in messages %}
+          <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
+              {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+      {% endfor %}
+  {% endif %}
+     
+      <div class="mb-3">
+        
+        {{ form.nombre.label_tag }}
+        
+        {{ form.nombre }}  
+    </div>
+    {% if form.nombre.errors %}
+    <div class="text-danger">
+        {{ form.nombre.errors.0 }}
+    </div>
+{% endif %}
+    <div class="mb-3">
+        
+      {{ form.unidadMedida.label_tag }} 
+      {{ form.unidadMedida }}  
+  </div>
+      <input type="hidden" name="cantidad" value="0">
+      <input type="hidden" name="estado" value="True"> 
+      <button type="submit"class="btn btn-primary">Crear </button>
+  </form>
     <div>
       <a href="../materiaVer/" class="btn btn-info">Volver</a>
     </div>

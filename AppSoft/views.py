@@ -1,5 +1,6 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from AppSoft.models import MateriaPrima,Productos,Proveedores,Compra, Usuario, Bodeguero, ProductoMateria
+from django.contrib import messages
 from . import forms
 from .forms import MateriaPrimaForm,ProductosForm,ProveedoresForm,CompraForm, Usuariocuentaform, BodegueroForm,ProductoMateriaFormSet
 
@@ -10,6 +11,7 @@ def crearcuenta(request):
             usuario = form.save(commit=False)
             usuario.estadoUsuario='True'
             form.save()
+            messages.success(request, 'Cuenta creada con éxito.')
             return redirect('login')  # Redirigir al login después de crear la cuenta
     else:
         form = Usuariocuentaform()
@@ -52,10 +54,14 @@ def materiaCrear(request):
         if form.is_valid():
             nombre_materia = form.cleaned_data.get('nombre')
             if MateriaPrima.objects.filter(nombre=nombre_materia).exists():
-                form.add_error('nombre', 'Esta materia prima ya existe.')
+                messages.error(request, "Materia ya existente")
+
             else:
-                MateriaPrima.cantidad=0
-                form.save()
+                nueva_materia = form.save(commit=False)
+                nueva_materia.estadoMateria = True
+                nueva_materia.cantidad = 0
+                nueva_materia.save()
+                messages.success(request, 'Materia creada con éxito.')
                 return redirect('../materiaVer/')
     data = {'form' : form , 'titulo': 'Agregar Materia Prima'}
     return render (request,'materiaCrear.html',data)
@@ -67,13 +73,14 @@ def materiaCrearBodeguero(request):
         if form.is_valid():
             nombre_materia = form.cleaned_data.get('nombre')
             if MateriaPrima.objects.filter(nombre=nombre_materia).exists():
-                form.add_error('nombre', 'Esta materia prima ya existe.')
+                messages.error(request, "Materia ya existente")
                 print("La materia prima ya existe en la base de datos.")
             else:
                 nueva_materia = form.save(commit=False)
                 nueva_materia.estadoMateria = True
                 nueva_materia.cantidad = 0
                 nueva_materia.save()
+                messages.success(request, 'Materia creada con éxito.')
                 print("Materia prima creada con éxito.")
                 return redirect('../materiaVerBodeguero/')
         else:
@@ -89,6 +96,10 @@ def materiaActualizar(request,id):
         form=MateriaPrimaForm(request.POST,instance=materia)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Materia Actualizada con éxito.')
+            return redirect('../materiaVer/')
+        else:
+            messages.error(request, " Ocurrio un error al actualizar la materia")
     data={'form':form , 'titulo': 'Actualizar Materia Prima'}
     return render(request,'materiaCrear.html',data)
 
@@ -96,6 +107,7 @@ def materiaDeshabilitar(request,id):
      materia=MateriaPrima.objects.get(id=id)
      materia.estadoMateria = False
      materia.save()
+     messages.success(request, 'Materia Deshabilitada con éxito.')
      return redirect('../materiaVer')
 
 def materiasDeshabilitadas(request):
@@ -107,15 +119,22 @@ def materiaHabilitar(request,id):
     materia=MateriaPrima.objects.get(id=id)
     materia.estadoMateria = True
     materia.save()
+    messages.success(request, 'Materia Habilitada con éxito.')
     return redirect('../materiasDeshabilitadas')
 
 """
 Aqui van las views de Productos
 """
 def productosVer (request):
-    productos=Productos.objects.all()
+    productos=Productos.objects.filter(estadoProducto=True)
     data = {'productos' : productos, 'titulo':'Tabla Productos'}
     return render (request,'productosVer.html',data)
+
+def productosVerDeshabilitados (request):
+    productos=Productos.objects.filter(estadoProducto=False)
+    data = {'productos' : productos, 'titulo':'Tabla Productos'}
+    return render (request,'productosDeshabilitados.html',data)
+
 
 def productosCrear(request):
     # Inicializar form y formset
@@ -161,10 +180,23 @@ def productosCrear(request):
     return render(request, 'productosCrear.html', {'form': form, 'formset': formset, 'titulo': 'Agregar Producto'})
 
 def productosVerBodeguero(request):
-    productos=Productos.objects.all()
+    productos=Productos.objects.filter(estadoProducto=True)
     data = {'productos' : productos, 'titulo':'Tabla Productos'}
     return render (request,'productos_bodeguero.html',data)
 
+def productosDeshabilitar(request,id):
+     producto=Productos.objects.get(id=id)
+     producto.estadoProducto = False
+     producto.save()
+     messages.success(request, 'Producto Deshabilitado con éxito.')
+     return redirect('../productosVer')
+
+def productosHabilitar(request,id):
+    producto=Productos.objects.get(id=id)
+    producto.estadoProducto = True
+    producto.save()
+    messages.success(request, 'Producto Habilitado con éxito.')
+    return redirect('../productosDeshabilitados')
 
 def productosActualizar(request,id):
     producto = Productos.objects.get(id=id)
@@ -173,6 +205,8 @@ def productosActualizar(request,id):
         form=ProductosForm(request.POST,instance=producto)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Producto actualizado de forma éxitosa.')
+
     data={'form':form , 'titulo': 'Actualizar Producto'}
     return render(request,'productosCrear.html',data)
 
@@ -196,6 +230,8 @@ def proveedoresCrear(request):
         form = ProveedoresForm(request.POST)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Ingreso éxitoso.')
+            return redirect('../proveedoresVer')
     data = {'form' : form , 'titulo': 'Agregar Proveedores'}
     return render (request,'proveedoresCrear.html',data)
 
@@ -206,6 +242,8 @@ def proveedoresActualizar(request,id):
         form=ProveedoresForm(request.POST,instance=proveedor)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Actualización éxitosa.')
+            return redirect('../proveedoresVer')
     data={'form':form , 'titulo': 'Actualizar Proveedores'}
     return render(request,'proveedoresCrear.html',data)
 
@@ -267,8 +305,10 @@ def compra_agregar(request, nombre):
             total_compras = sum(compra.cantidad for compra in compras_previas)
             materia.cantidad =total_compras
             materia.save()
+            messages.success(request, 'Ingreso éxitoso.')
             return redirect('../../materiaVer/')
         else:
+            messages.error(request, "Ingreso Fallido")
             print("Formulario no válido:", form.errors)
     else:
         form = CompraForm()
@@ -295,8 +335,12 @@ def compra_agregarBodeguero(request, nombre):
             total_compras = sum(compra.cantidad for compra in compras_previas)
             materia.cantidad =total_compras
             materia.save()
+            messages.success(request, 'Ingreso éxitoso.')
+
             return redirect('../../materiaVerBodeguero/')
         else:
+            messages.error(request, "Ingreso Fallido")
+
             print("Formulario no válido:", form.errors)
     else:
         form = CompraForm()

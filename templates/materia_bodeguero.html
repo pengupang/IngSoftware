@@ -1,6 +1,14 @@
 {%include 'header_bodeguero.html'%}
 <div class="container mt-5">
 <div class="alert alert-primary display-1">{{titulo}}</div>
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+{% endif %}
 <div class="mb-3">
   <a href="../materiaCrearBodeguero/" class="btn btn-success">
       <i class="bi bi-plus-circle-fill"></i> Agregar Nueva Materia
