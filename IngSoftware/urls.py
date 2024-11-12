@@ -33,8 +33,10 @@ urlpatterns = [
     path('materiasHabilitar/<int:id>',views.materiaHabilitar),
     
     
-    path('productosVer/',views.productosVer),
-    #path('productosCrear/',views.productosCrear, name='productosCrear'),
+
+    
+    path('productosVer/', views.productosVer, name='productosVer'), 
+    path('nuevosProducto/', views.productosCrearNuevo,name='productosCrearNuevo'),
     path('nuevosProducto/',views.productosCrearNuevo),
     path('productosActualizar/<int:id>', views.productosActualizar),
     path('productosDeshabilitar/<int:id>', views.productosDeshabilitar),

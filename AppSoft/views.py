@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect,get_object_or_404
 from AppSoft.models import MateriaPrima,Productos,Proveedores,Compra, Usuario, Bodeguero, ProductoMateria
 from django.contrib import messages
 from . import forms
-from .forms import MateriaPrimaForm,ProductosForm,ProveedoresForm,CompraForm, Usuariocuentaform, BodegueroForm,ProductoMateriaFormSet
+from .forms import MateriaPrimaForm,ProductosForm,ProveedoresForm,CompraForm, Usuariocuentaform, BodegueroForm
 
 def crearcuenta(request):
     if request.method == 'POST':
@@ -125,10 +125,11 @@ def materiaHabilitar(request,id):
 """
 Aqui van las views de Productos
 """
-def productosVer (request):
-    productos=Productos.objects.filter(estadoProducto=True)
-    data = {'productos' : productos, 'titulo':'Tabla Productos'}
-    return render (request,'productosVer.html',data)
+def productosVer(request):
+    productos = Productos.objects.filter(estadoProducto=True).prefetch_related('productomateria_set__materia')
+    data = {'productos': productos, 'titulo': 'Tabla Productos'}
+    return render(request, 'productosVer.html', data)
+
 
 def productosVerDeshabilitados (request):
     productos=Productos.objects.filter(estadoProducto=False)
@@ -136,61 +137,53 @@ def productosVerDeshabilitados (request):
     return render (request,'productosDeshabilitados.html',data)
 
 
-def productosCrear(request):
-    # Inicializar form y formset
-    form = ProductosForm()
-    formset = ProductoMateriaFormSet()
-
-    if request.method == 'POST':
-        form = ProductosForm(request.POST)
-        formset = ProductoMateriaFormSet(request.POST)
-
-        # Validar los formularios
-        if form.is_valid() and formset.is_valid():
-            producto = form.save()  # Guardar el producto
-
-            # Procesar los formularios de la relación Producto-Materia Prima
-            for producto_materia_form in formset:
-                if producto_materia_form.is_valid():
-                    producto_materia = producto_materia_form.save(commit=False)
-                    producto_materia.producto = producto  # Asignar el producto
-
-                    # Asegurarse de que cantidad_usada es válida
-                    if producto_materia.cantidad_usada <= 0:
-                        formset.add_error(None, "La cantidad usada debe ser mayor que 0.")
-                        return render(request, 'productosCrear.html', {'form': form, 'formset': formset, 'titulo': 'Agregar Producto'})
-
-                    producto_materia.save()  # Guardar la relación Producto-Materia Prima
-
-                    # Actualizar la cantidad de materia prima
-                    materia_prima = producto_materia.materia
-                    if materia_prima.cantidad >= producto_materia.cantidad_usada:
-                        materia_prima.cantidad -= producto_materia.cantidad_usada
-                        materia_prima.save()
-                    else:
-                        formset.add_error(None, f"No hay suficiente {materia_prima.nombre} en inventario.")
-                        return render(request, 'productosCrear.html', {'form': form, 'formset': formset, 'titulo': 'Agregar Producto'})
-
-            return redirect('../productosVer/')
-        else:
-            # Si los formularios no son válidos, mostrar los errores
-            return render(request, 'productosCrear.html', {'form': form, 'formset': formset, 'titulo': 'Agregar Producto'})
-    
-    # Si es una solicitud GET, inicializamos los formularios
-    return render(request, 'productosCrear.html', {'form': form, 'formset': formset, 'titulo': 'Agregar Producto'})
-
 def productosCrearNuevo(request):
     form = ProductosForm()
+    materias_primas = MateriaPrima.objects.all()  # Obtenemos todas las materias primas
+
     if request.method == 'POST':
         form = ProductosForm(request.POST)
         if form.is_valid():
+            # Crear el producto con la cantidad especificada
             nuevo_producto = form.save(commit=False)
             nuevo_producto.estadoProducto = True
-            nuevo_producto.cantidad = 0
             nuevo_producto.save()
-            return redirect('../productosVer/')
-    data = {'form' : form , 'titulo': 'Agregar Productos'}
-    return render (request,'productosNuevos.html',data)
+
+            # Obtener las materias primas seleccionadas
+            materias_seleccionadas = request.POST.getlist('composicion')
+
+            for materia_id in materias_seleccionadas:
+                materia = get_object_or_404(MateriaPrima, id=materia_id)
+
+                # Obtener la cantidad utilizada de la materia prima seleccionada
+                cantidad_utilizada = float(request.POST.get(f'cantidad_utilizada_{materia_id}', 0))
+
+                if cantidad_utilizada > 0:
+                    # Crear la relación ProductoMateria
+                    ProductoMateria.objects.create(
+                        producto=nuevo_producto,
+                        materia=materia,
+                        cantidad_utilizada=cantidad_utilizada
+                    )
+
+                    # Restar la cantidad de materia prima utilizada
+                    if materia.cantidad >= cantidad_utilizada:
+                        materia.cantidad -= cantidad_utilizada
+                        materia.save()
+                    else:
+                        # Si no hay suficiente cantidad, mostrar un error
+                        return render(request, 'error.html', {'mensaje': f"Inventario insuficiente para {materia.nombre}"})
+
+            return redirect('productosVer')  # Redirigir a la vista que lista los productos
+
+    data = {
+        'form': form,
+        'materias_primas': materias_primas,
+        'titulo': 'Agregar Producto'
+    }
+    return render(request, 'productosNuevos.html', data)
+
+
 
 def productosVerBodeguero(request):
     productos=Productos.objects.filter(estadoProducto=True)
@@ -211,17 +204,40 @@ def productosHabilitar(request,id):
     messages.success(request, 'Producto Habilitado con éxito.')
     return redirect('../productosDeshabilitados')
 
-def productosActualizar(request,id):
-    producto = Productos.objects.get(id=id)
-    form= ProductosForm(instance=producto)
-    if request.method == "POST": 
-        form=ProductosForm(request.POST,instance=producto)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Producto actualizado de forma éxitosa.')
+def productosActualizar(request, id):
+    producto = get_object_or_404(Productos, id=id)
+    titulo = "Actualizar Producto"
 
-    data={'form':form , 'titulo': 'Actualizar Producto'}
-    return render(request,'productosCrear.html',data)
+    if request.method == 'POST':
+        cantidad_agregar = int(request.POST.get('cantidad', 0))
+        producto.cantidad += cantidad_agregar
+        producto.save()
+
+        for composicion in producto.productomateria_set.all():
+            materia_id = composicion.materia.id
+            nueva_cantidad_utilizada = float(request.POST.get(f'cantidad_utilizada_{materia_id}', 0))
+            diferencia_cantidad = nueva_cantidad_utilizada - composicion.cantidad_utilizada
+            
+            # Actualizar la cantidad de materia prima en el inventario
+            if composicion.materia.cantidad >= diferencia_cantidad:
+                composicion.materia.cantidad -= diferencia_cantidad
+                composicion.materia.save()
+
+                # Actualizar la cantidad utilizada en la relación ProductoMateria
+                composicion.cantidad_utilizada = nueva_cantidad_utilizada
+                composicion.save()
+            else:
+                return render(request, 'error.html', {'mensaje': f"Inventario insuficiente para {composicion.materia.nombre}"})
+
+        return redirect('productosVer')
+
+    data = {
+        'titulo': titulo,
+        'producto': producto
+    }
+    return render(request, 'agregarCantidadProducto.html', data)
+
+
 
 
 """

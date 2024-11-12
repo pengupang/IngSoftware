@@ -1,21 +1,22 @@
+
 {%include 'header.html'%}
 
-<div class="container mt-5">
-    <div class="alert alert-primary display-1">{{titulo}}</div>
-    <form method="POST">
-      {% csrf_token %}
-      <div class="mb-3">
-        {{form.nombre.label_tag}}
-        {{form.nombre}}
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+
+  <h3>Composición:</h3>
+  {% for materia in materias_primas %}
+      <div>
+          <label for="materia_{{ materia.id }}">{{ materia.nombre }}</label>
+          <input type="checkbox" id="materia_{{ materia.id }}" name="composicion" value="{{ materia.id }}">
+          <label for="cantidad_{{ materia.id }}">Cantidad utilizada</label>
+          <input type="text" id="cantidad_{{ materia.id }}" name="cantidad_utilizada_{{ materia.id }}">
       </div>
-      <input type="hidden" name="cantidad" value="0">
-      <input type="hidden" name="estado" value="True"> 
-      <div class="mb-3">
-        {{form.composicion.label_tag}}
-        {{form.composicion}}
-      </div>
-     
-        <button type="submit" class="btn btn-primary">Crear </button>
-    </form>
-    <div>
-        {%include 'footer.html'%}
+  {% endfor %}
+
+  <button type="submit">Crear Producto</button>
+</form>
+
+
+{%include 'footer.html'%}

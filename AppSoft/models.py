@@ -37,7 +37,12 @@ class Productos(models.Model):
 class ProductoMateria(models.Model):
     producto = models.ForeignKey(Productos, on_delete=models.CASCADE)
     materia = models.ForeignKey(MateriaPrima, on_delete=models.CASCADE)
-    cantidad_usada = models.FloatField(default=1)
+    cantidad_utilizada = models.FloatField(default=0)  # Cantidad de esta materia prima necesaria para el producto
+
+    def __str__(self):
+        return f"{self.producto.nombre} - {self.materia.nombre} - {self.cantidad_utilizada}"
+
+
 
 class Usuario (models.Model):
     nombre= models.CharField(max_length=60)

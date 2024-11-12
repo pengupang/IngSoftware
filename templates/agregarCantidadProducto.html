@@ -1,0 +1,30 @@
+{%include 'header.html'%}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ titulo }}</title>
+</head>
+<body>
+    <h1>{{ titulo }} - {{ producto.nombre }}</h1>
+    
+    <form method="post">
+        {% csrf_token %}
+        <!-- Cantidad a Agregar -->
+        <div>
+            <label for="cantidad">Cantidad a agregar:</label>
+            <input type="text" name="cantidad" placeholder="Cantidad a agregar" required>
+        </div>
+        
+        <h3>Composición:</h3>
+        {% for composicion in producto.productomateria_set.all %}
+            <div>
+                <label for="materia_{{ composicion.materia.id }}">{{ composicion.materia.nombre }}</label>
+                <input type="text" id="cantidad_{{ composicion.materia.id }}" name="cantidad_utilizada_{{ composicion.materia.id }}" value="{{ composicion.cantidad_utilizada }}" required>
+            </div>
+        {% endfor %}
+        
+        <button type="submit">Actualizar Producto</button>
+    </form>
+</body>
+</html>

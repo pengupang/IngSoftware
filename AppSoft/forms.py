@@ -1,6 +1,6 @@
 from django import forms 
 from django.forms import inlineformset_factory
-from AppSoft.models import MateriaPrima,Proveedores,Productos,Usuario,Compra, Bodeguero,ProductoMateria
+from AppSoft.models import MateriaPrima,Proveedores,Productos,Usuario,Compra, Bodeguero
 
 class MateriaPrimaForm(forms.ModelForm):
     class Meta:
@@ -36,36 +36,29 @@ class ProveedoresForm(forms.ModelForm):
 
 
 class ProductosForm(forms.ModelForm):
+    composicion = forms.ModelMultipleChoiceField(
+        queryset=MateriaPrima.objects.all(),
+        widget=forms.CheckboxSelectMultiple
+    )
+    cantidad = forms.IntegerField(min_value=1, label='Cantidad de Productos')
+
     class Meta:
         model = Productos
-        fields = ['nombre', 'cantidad', 'estadoProducto', 'composicion']
-        widgets = {
-            'nombre': forms.TextInput(attrs={'class': 'form-control'}),
-            'cantidad': forms.NumberInput(attrs={'class': 'form-control'}),
-            'estadoProducto': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
-        }
-
-    composicion = forms.ModelMultipleChoiceField(
-        queryset=MateriaPrima.objects.filter(estadoMateria=True),
-        widget=forms.CheckboxSelectMultiple,
-        required=True
-    ) 
+        fields = ['nombre', 'cantidad', 'composicion']
 
 
-class ProductoMateriaForm(forms.ModelForm):
-    class Meta:
-        model = ProductoMateria
-        fields = ['producto', 'materia', 'cantidad_usada']
-    
-    def clean_cantidad_usada(self):
-        cantidad = self.cleaned_data.get('cantidad_usada')
-        if cantidad is None or cantidad <= 0:
-            raise forms.ValidationError("La cantidad utilizada debe ser mayor que 0.")
-        return cantidad
 
-ProductoMateriaFormSet = inlineformset_factory(
-    Productos, ProductoMateria, form=ProductoMateriaForm, extra=1
-)
+class ProductoMateriaForm(forms.Form):
+    materia_id = forms.IntegerField(widget=forms.HiddenInput())
+    cantidad_utilizada = forms.FloatField(label="Cantidad utilizada", min_value=1)
+
+
+class CantidadMateriaPrimaForm(forms.Form):
+    materia_id = forms.IntegerField(widget=forms.HiddenInput())
+    cantidad_utilizada = forms.FloatField(label="Cantidad utilizada", min_value=0)
+
+
+
 class UsuarioForm(forms.ModelForm):
     class Meta:
         model = Usuario
