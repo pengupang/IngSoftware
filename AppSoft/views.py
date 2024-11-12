@@ -25,9 +25,9 @@ def login(request):
         usuario = Usuario.objects.filter(nombre=nombre, contraseña=contraseña).first()  # Usamos filter() y first()
         if usuario and usuario.estadoUsuario == 'True':
             request.session['usuario_id'] = usuario.id  # Redirigir a la URL 'usuario'
-            if usuario.rol == 'administrador':
+            if usuario.rol.lower() == 'administrador':
                 return redirect('productosCrear')  # Redirigir a la URL 'administrador'
-            elif usuario.rol=='bodeguero':
+            elif usuario.rol.lower()=='bodeguero':
                 return redirect('materiaVerBodeguero')#lo mismo pero para el bodeguero
         else:
             return render(request, 'login.html', {'error': 'Usuario inválido'})
