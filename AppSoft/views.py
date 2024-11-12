@@ -179,6 +179,19 @@ def productosCrear(request):
     # Si es una solicitud GET, inicializamos los formularios
     return render(request, 'productosCrear.html', {'form': form, 'formset': formset, 'titulo': 'Agregar Producto'})
 
+def productosCrearNuevo(request):
+    form = ProductosForm()
+    if request.method == 'POST':
+        form = ProductosForm(request.POST)
+        if form.is_valid():
+            nuevo_producto = form.save(commit=False)
+            nuevo_producto.estadoProducto = True
+            nuevo_producto.cantidad = 0
+            nuevo_producto.save()
+            return redirect('../productosVer/')
+    data = {'form' : form , 'titulo': 'Agregar Productos'}
+    return render (request,'productosNuevos.html',data)
+
 def productosVerBodeguero(request):
     productos=Productos.objects.filter(estadoProducto=True)
     data = {'productos' : productos, 'titulo':'Tabla Productos'}

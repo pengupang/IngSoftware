@@ -23,22 +23,31 @@ urlpatterns = [
     path('registro/', views.crearcuenta, name='register'),
     path('comprasVer/',views.compras_Ver),
     path('comprasAgregar/<str:nombre>',views.compra_agregar),
+    
+    
     path('materiaVer/',views.materiaVer, name='materiaVer'),
     path('materiaCrear/',views.materiaCrear),
     path('materiaActualizar/<int:id>',views.materiaActualizar),
     path('materiaDeshabilitar/<int:id>',views.materiaDeshabilitar),
     path('materiasDeshabilitadas/',views.materiasDeshabilitadas),
     path('materiasHabilitar/<int:id>',views.materiaHabilitar),
+    
+    
     path('productosVer/',views.productosVer),
-    path('productosCrear/',views.productosCrear, name='productosCrear'),
+    #path('productosCrear/',views.productosCrear, name='productosCrear'),
+    path('nuevosProducto/',views.productosCrearNuevo),
     path('productosActualizar/<int:id>', views.productosActualizar),
     path('productosDeshabilitar/<int:id>', views.productosDeshabilitar),
     path('productosDeshabilitados/',views.productosVerDeshabilitados),
     path('productosHabilitar/<int:id>',views.productosHabilitar),
+   
+   
     path('proveedoresVer/', views.proveedoresVer),
     path('proveedoresCrear/', views.proveedoresCrear),
     path('proveedoresActualizar/<int:id>', views.proveedoresActualizar),
     path('proveedoresDeshabilitar/', views.proveedoresDeshabilitar),
+    
+    
     path('lista_usuarios/', views.lista_usuarios),
     path('crear_usuario/', views.crear_usuario),
     path('actualizar_usuario/<int:id>', views.actualizar_usuario),
