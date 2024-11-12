@@ -28,7 +28,7 @@ class Proveedores (models.Model):
 class Productos(models.Model):
     nombre = models.CharField(max_length=60)
     cantidad = models.IntegerField()
-    composicion = models.ManyToManyField('MateriaPrima', through='ProductoMateria', related_name='productos')
+    composicion = models.ManyToManyField('MateriaPrima', through='ProductoMateria',related_name='productos')
     estadoProducto = models.BooleanField(default=True)
 
     def __str__(self):
