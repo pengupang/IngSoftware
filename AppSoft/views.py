@@ -172,8 +172,8 @@ def productosCrearNuevo(request):
                         materia.save()
                     else:
                         # Si no hay suficiente cantidad, mostrar un error
-                        return render(request, 'error.html', {'mensaje': f"Inventario insuficiente para {materia.nombre}"})
-
+                        messages.error(request, f"Inventario insuficiente para {materia.nombre}")
+                        
             return redirect('../productosVer/')  # Redirigir a la vista que lista los productos
 
     data = {
@@ -227,7 +227,8 @@ def productosActualizar(request, id):
                 composicion.cantidad_utilizada = nueva_cantidad_utilizada
                 composicion.save()
             else:
-                return render(request, 'error.html', {'mensaje': f"Inventario insuficiente para {composicion.materia.nombre}"})
+                messages.error(request, f"Inventario insuficiente para {composicion.materia.nombre}")
+                
 
         return redirect('productosVer')
 

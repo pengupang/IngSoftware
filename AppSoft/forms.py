@@ -6,6 +6,10 @@ class MateriaPrimaForm(forms.ModelForm):
     class Meta:
         model = MateriaPrima
         fields='__all__'
+        widgets={
+            'nombre' : forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nombre de la materia','required': 'required'}),
+            'unidadMedida': forms.Select(attrs={'class': 'form-select', 'required': 'required'})
+        }
 
 class Usuariocuentaform(forms.ModelForm):
     class Meta:
@@ -30,7 +34,7 @@ class ProveedoresForm(forms.ModelForm):
         fields='__all__'
         widgets = {
             'nombre' : forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nombre del Proveedor'}),
-            'contacto' : forms.TextInput(attrs= {'class':'form-control','placeholder' : 'Contacto' })
+            'contacto': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Contacto', 'min': 100000000, 'max': 99999999999,'pattern': '^\d{9}$'})
 
         }
 
@@ -40,11 +44,20 @@ class ProductosForm(forms.ModelForm):
         queryset=MateriaPrima.objects.all(),
         widget=forms.CheckboxSelectMultiple
     )
-    cantidad = forms.IntegerField(min_value=1, label='Cantidad de Productos')
+    cantidad = forms.IntegerField(min_value=1, label='Cantidad de Productos',widget=forms.NumberInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': 'Cantidad Producto',
+                'required': 'required'
+            }))
 
     class Meta:
         model = Productos
         fields = ['nombre', 'cantidad', 'composicion']
+        widgets = {
+            'nombre' : forms.TextInput(attrs={'class':'form-control', 'placeholder':'Nombre Producto','required': 'required'}),
+           
+        }
 
 
 
