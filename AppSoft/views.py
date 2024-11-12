@@ -395,7 +395,7 @@ def compras_Ver (request):
 def bodeguerosVer(request):
     bodeguero=Bodeguero.objects.all()
     data = {'boguederos' : bodeguero, 'titulo':'Tabla Boguederos'}
-    return render (request,'bodegueroVer.html',data)
+    return render (request,'BodegueroVer.html',data)
 
 def bodegueroCrear(request):
     form = BodegueroForm()
