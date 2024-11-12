@@ -26,9 +26,9 @@ def login(request):
         if usuario and usuario.estadoUsuario == 'True':
             request.session['usuario_id'] = usuario.id  # Redirigir a la URL 'usuario'
             if usuario.rol.lower() == 'administrador':
-                return redirect('productosCrear')  # Redirigir a la URL 'administrador'
+                return redirect('../nuevosProducto')  # Redirigir a la URL 'administrador'
             elif usuario.rol.lower()=='bodeguero':
-                return redirect('materiaVerBodeguero')#lo mismo pero para el bodeguero
+                return redirect('../materiaVerBodeguero')#lo mismo pero para el bodeguero
         else:
             return render(request, 'login.html', {'error': 'Usuario inválido'})
     return render(request, 'login.html')
@@ -174,7 +174,7 @@ def productosCrearNuevo(request):
                         # Si no hay suficiente cantidad, mostrar un error
                         return render(request, 'error.html', {'mensaje': f"Inventario insuficiente para {materia.nombre}"})
 
-            return redirect('productosVer')  # Redirigir a la vista que lista los productos
+            return redirect('../productosVer/')  # Redirigir a la vista que lista los productos
 
     data = {
         'form': form,
@@ -385,7 +385,7 @@ def compra_agregarBodeguero(request, nombre):
 
 def compras_Ver (request):
     compras=Compra.objects.all()
-    data = {'compras' : compras, 'titulo':'Tabla Compras'}
+    data = {'compras' : compras, 'titulo':'Tabla Ingresos Materia Prima'}
     return render (request,'compras_ver.html',data)
 
 
