@@ -26,6 +26,7 @@ urlpatterns = [
     
     
     path('materiaVer/',views.materiaVer, name='materiaVer'),
+    path('materiaVerBodeguero/', views.materiaVerBodeguero, name='materiaVerBodeguero'),
     path('materiaCrear/',views.materiaCrear),
     path('materiaActualizar/<int:id>',views.materiaActualizar),
     path('materiaDeshabilitar/<int:id>',views.materiaDeshabilitar),
