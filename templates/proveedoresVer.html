@@ -25,6 +25,7 @@
                     <th>Id</th>
                     <th>Nombre</th>
                     <th>Contacto</th>
+                    <th>Estado</th>
                     <th colspan="3">Acciones</th>
                 </tr>
             </thead>
@@ -42,7 +43,7 @@
                        </a>
                     </td>
                     <td>
-                        <a href="../proveedoresDeshabilitar/{{pro.id}}"
+                        <a href="{% url 'delete_proveedores' pro.id %}"
                           class='btn btn-danger'><i class="bi bi-trash">Deshabilitar</i>
                        </a>
                     </td>

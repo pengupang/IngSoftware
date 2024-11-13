@@ -21,6 +21,7 @@ class MateriaPrima(models.Model):
 class Proveedores (models.Model):
     nombre = models.CharField(max_length=50)
     contacto = models.CharField(max_length=12)
+    estado= models.BooleanField(default=True)
     def __str__(self):
         return self.nombre
 

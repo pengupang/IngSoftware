@@ -284,6 +284,13 @@ def proveedoresDeshabilitar(request,id):
      data={"proveedores":proveedores}
      return render(request,'proveedoresCrear.html',data)
 
+def delete_proveedores(id):
+    proveedor = Proveedores.objects.get(id=id)
+    if proveedor:
+        proveedor.estado = 'False'
+        proveedor.save()
+    return redirect('proveedoresVer')
+
 """
 Aqui van las views de Usuarios
 """
@@ -311,14 +318,7 @@ def actualizar_usuario(request, id):
     data={'form':form , 'titulo': 'Actualizar Usuarios'}
     return render(request,'usuario_crear.html',data)
 
-def deshabilitar_usuario(request,id):
-     usuarios=Usuario.objects.get(id=id)
-     if request.method=="POST":
-       usuarios.delete()
-     data={"usuarios":usuarios}
-     return render(request,'usuario_crear.html',data)
-
-def delete_usuario(request, id):
+def delete_usuario(id):
     usuario = Usuario.objects.get(id=id)
     if usuario:
         usuario.estadoUsuario = 'False'

@@ -43,10 +43,10 @@ urlpatterns = [
     path('productosHabilitar/<int:id>',views.productosHabilitar),
    
    
-    path('proveedoresVer/', views.proveedoresVer),
+    path('proveedoresVer/', views.proveedoresVer, name='proveedoresVer'),
     path('proveedoresCrear/', views.proveedoresCrear),
     path('proveedoresActualizar/<int:id>', views.proveedoresActualizar),
-    path('proveedoresDeshabilitar/', views.proveedoresDeshabilitar),
+    path('delete_proveedores/<int:id>/', views.delete_proveedores, name='delete_proveedores'),
     
     
     path('lista_usuarios/', views.lista_usuarios),
