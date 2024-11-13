@@ -46,6 +46,9 @@ urlpatterns = [
     path('proveedoresVer/', views.proveedoresVer, name='proveedoresVer'),
     path('proveedoresCrear/', views.proveedoresCrear),
     path('proveedoresActualizar/<int:id>', views.proveedoresActualizar),
+    path('proveedoresDeshabilitar/<int:id>',views.proveedoresDeshabilitar),
+    path('proveedoresDeshabilitados/',views.proveedoresDeshabilitados),
+    path('proveedoresHabilitar/<int:id>',views.proveedoresHabilitar),
     path('delete_proveedores/<int:id>/', views.delete_proveedores, name='delete_proveedores'),
     
     

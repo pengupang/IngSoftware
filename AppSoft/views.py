@@ -245,7 +245,7 @@ def productosActualizar(request, id):
 Aqui van las views de Proveedores
 """
 def proveedoresVer(request):
-    proveedores=Proveedores.objects.all()
+    proveedores=Proveedores.objects.filter(estado=True)
     data = {'proveedores' : proveedores, 'titulo':'Tabla Proveedores'}
     return render (request,'proveedoresVer.html',data)
 
@@ -279,10 +279,23 @@ def proveedoresActualizar(request,id):
 
 def proveedoresDeshabilitar(request,id):
      proveedores=Proveedores.objects.get(id=id)
-     if request.method=="POST":
-       proveedores.delete()
-     data={"proveedores":proveedores}
-     return render(request,'proveedoresCrear.html',data)
+     proveedores.estado = False
+     proveedores.save()
+     messages.success(request, 'Proveedor deshabilitado con éxito.')
+     return redirect('../proveedoresVer')
+
+def proveedoresDeshabilitados(request):
+    proveedores=Proveedores.objects.filter(estado=False)
+    data = {'proveedores' : proveedores, 'titulo':'Tabla Proveedores'}
+    return render (request,'proveedoresDeshabilitar.html',data)
+
+def proveedoresHabilitar(request,id):
+    proveedor=Proveedores.objects.get(id=id)
+    proveedor.estado = True
+    proveedor.save()
+    messages.success(request, 'Proveedor Habilitado con éxito.')
+    return redirect('../proveedoresDeshabilitados')
+
 
 def delete_proveedores(id):
     proveedor = Proveedores.objects.get(id=id)
