@@ -40,14 +40,14 @@
                         <td>{{ usuario.nombre }}</td>
                         <td>{{ usuario.contrasena }}</td>
                         <td>{{ usuario.rol }}</td>
-                        <td>{{ usuario.estadoUsuario|yesno:"Activo,Inactivo" }}</td>
+                        <td>{{ usuario.estadoUsuario}}</td>
                         <td>
                             <a href="../actualizar_usuario/{{usuario.id}} " class="btn btn-info">
                                 <i class="bi bi-pencil">Editar</i>
                             </a>
                         </td>
                         <td>
-                            <a href="../deshabilitar_usuario/{{usuario.id}}" class="btn btn-danger">
+                            <a href="{% url 'delete_usuario' usuario.id %}" class="btn btn-danger">
                                 <i class="bi bi-trash">Deshabilitar</i>
                             </a>
                         </td>

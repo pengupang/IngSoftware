@@ -52,7 +52,7 @@ urlpatterns = [
     path('lista_usuarios/', views.lista_usuarios),
     path('crear_usuario/', views.crear_usuario),
     path('actualizar_usuario/<int:id>', views.actualizar_usuario),
-    path('deshabilitar_usuario/<int:id>',views.deshabilitar_usuario),
+    path('delete-usuario/<int:id>/', views.delete_usuario, name='delete_usuario'),
     
     
     path('bodegueroVer/',views.bodeguerosVer),

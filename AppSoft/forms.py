@@ -100,7 +100,7 @@ class BodegueroForm(forms.ModelForm):
         model = Bodeguero
         fields='__all__'
         widgets = {
-            'nombre' : forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nombre del Proveedor'}),
+            'nombre' : forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nombre del Bodeguero'}),
             'contacto' : forms.TextInput(attrs= {'class':'form-control','placeholder' : 'Contacto' })
 
         }

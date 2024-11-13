@@ -318,6 +318,13 @@ def deshabilitar_usuario(request,id):
      data={"usuarios":usuarios}
      return render(request,'usuario_crear.html',data)
 
+def delete_usuario(request, id):
+    usuario = Usuario.objects.get(id=id)
+    if usuario:
+        usuario.estadoUsuario = 'False'
+        usuario.save()
+    return redirect('login')
+
 """
 Aqui van las views de ingresos
 """
