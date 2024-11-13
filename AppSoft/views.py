@@ -331,10 +331,10 @@ def actualizar_usuario(request, id):
     data={'form':form , 'titulo': 'Actualizar Usuarios'}
     return render(request,'usuario_crear.html',data)
 
-def delete_usuario(id):
-    usuario = Usuario.objects.get(id=id)
+def delete_usuario(request, emp_id):
+    usuario = Usuario.objects.get(id=emp_id)
     if usuario:
-        usuario.estadoUsuario = 'False'
+        usuario.estadoUsuario = False
         usuario.save()
     return redirect('login')
 
