@@ -1,5 +1,7 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from AppSoft.models import MateriaPrima,Productos,Proveedores,Compra, Usuario, Bodeguero, ProductoMateria
+from .validators import validar_rut_mod11
+from django.core.exceptions import ValidationError
 from django.contrib import messages
 from . import forms
 from .forms import MateriaPrimaForm,ProductosForm,ProveedoresForm,CompraForm, Usuariocuentaform, BodegueroForm
@@ -255,15 +257,25 @@ def proveedoresVerBodeguero(request):
     return render (request,'proveedores_bodeguero.html',data)
 
 def proveedoresCrear(request):
-    form = ProveedoresForm()
     if request.method == 'POST':
         form = ProveedoresForm(request.POST)
         if form.is_valid():
-            form.save()
-            messages.success(request, 'Ingreso éxitoso.')
-            return redirect('../proveedoresVer')
-    data = {'form' : form , 'titulo': 'Agregar Proveedores'}
-    return render (request,'proveedoresCrear.html',data)
+            nueva_proveedor = form.save(commit=False)
+            nueva_proveedor.estado = True
+            nueva_proveedor.save()
+            messages.success(request, 'Proveedor creado exitosamente.')
+            return redirect('proveedoresVer')  # Asegúrate de que esta URL esté definida correctamente
+        else:
+            # Agregar esto para ver los errores
+            print(form.errors)
+            messages.error(request, 'Hubo un error al crear el proveedor. Verifique los datos ingresados.')
+
+    else:
+        form = ProveedoresForm()
+
+    data = {'form': form, 'titulo': 'Agregar Proveedor'}
+    return render(request, 'proveedoresCrear.html', data)
+
 
 def proveedoresActualizar(request,id):
     proveedor = Proveedores.objects.get(id=id)

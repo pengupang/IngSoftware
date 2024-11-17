@@ -1,5 +1,8 @@
 from django.db import models
 import datetime
+from django.core.exceptions import ValidationError
+from .validators import validar_rut_mod11
+
 
 # Create your models here.
 class MateriaPrima(models.Model):
@@ -18,12 +21,19 @@ class MateriaPrima(models.Model):
     def __str__(self):
         return self.nombre
 
+def validar_rut(rut):
+    if not validar_rut_mod11(rut):
+        raise ValidationError("El RUT ingresado no es válido.")
+
 class Proveedores (models.Model):
     nombre = models.CharField(max_length=50)
     contacto = models.CharField(max_length=12)
     estado= models.BooleanField(default=True)
+    rut = models.CharField(max_length=10, unique=True, validators=[validar_rut])
+
     def __str__(self):
-        return self.nombre
+        return f"{self.nombre} - {self.rut}"
+
 
     
 class Productos(models.Model):

@@ -40,7 +40,8 @@ class ProveedoresForm(forms.ModelForm):
         fields='__all__'
         widgets = {
             'nombre' : forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nombre del Proveedor'}),
-            'contacto': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Contacto', 'min': 100000000, 'max': 99999999999,'pattern': r'^\d{9}$'})
+            'contacto': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Contacto', 'min': 100000000, 'max': 99999999999,'pattern': r'^\d{9}$'}),
+            'rut': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'RUT', 'pattern': r'^\d{1,8}-[0-9kK]{1}$'})
 
         }
 
@@ -91,7 +92,7 @@ class CompraForm(forms.ModelForm):
         widgets = {
             'fecha': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
             'proveedor': forms.Select(attrs={'class': 'form-select', 'required': 'required'}),
-            'lote': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Precio'}),
+            'lote': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Lote'}),
             'cantidad': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Cantidad', 'min': 1}),
         }
 
