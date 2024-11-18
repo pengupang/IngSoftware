@@ -93,7 +93,7 @@ class CompraForm(forms.ModelForm):
             'fecha': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
             'proveedor': forms.Select(attrs={'class': 'form-select', 'required': 'required'}),
             'lote': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Lote'}),
-            'cantidad': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Cantidad', 'min': 1}),
+            'cantidad': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Cantidad'}),
         }
 
 class BodegueroForm(forms.ModelForm):

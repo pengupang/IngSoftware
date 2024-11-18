@@ -1,7 +1,7 @@
 from django.db import models
 import datetime
 from django.core.exceptions import ValidationError
-from .validators import validar_rut_mod11
+from .validators import validar_rut_mod11,MinValueValidator
 
 
 # Create your models here.
@@ -65,7 +65,7 @@ class Compra(models.Model):
     fecha = models.DateField()
     proveedor = models.ForeignKey(Proveedores, on_delete=models.CASCADE)
     lote = models.DecimalField(max_digits=10, decimal_places=2)
-    cantidad = models.FloatField()
+    cantidad = models.FloatField(validators=[MinValueValidator(0.0)])
     materia = models.ForeignKey(MateriaPrima, on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__(self):

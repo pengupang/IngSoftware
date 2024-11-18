@@ -22,7 +22,7 @@
                 <label for="materia_{{ materia.id }}" class="form-check-label">{{ materia.nombre }}</label>
             </div>
             <label for="cantidad_{{ materia.id }}" class="me-2">Cantidad utilizada</label>
-            <input type="number" id="cantidad_{{ materia.id }}" name="cantidad_utilizada_{{ materia.id }}" class="form-control" style="width: 150px;">
+            <input type="number" id="cantidad_{{ materia.id }}" name="cantidad_utilizada_{{ materia.id }}" class="form-control" style="width: 150px;" required>
         </div>
 
   {% endfor %}

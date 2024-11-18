@@ -1,5 +1,7 @@
 import re
 from django.core.exceptions import ValidationError
+from django.core.validators import BaseValidator
+from django.utils.translation import gettext_lazy as _
 
 # Función para calcular el dígito verificador (DV) del RUT
 def calcular_dv(rut):
@@ -42,3 +44,9 @@ def validar_rut_mod11(rut_completo):
 
     # Comparar el DV calculado con el ingresado
     return dv_calculado == dv_ingresado
+
+class MinValueValidator(BaseValidator):
+    message = _('Asegurese que el valor sea mayor a %(limit_value)s.')
+    code = 'min_value'
+    def compare(self, value, limit_value):
+        return value < limit_value 
