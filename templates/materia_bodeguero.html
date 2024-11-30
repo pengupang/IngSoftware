@@ -10,7 +10,7 @@
     {% endfor %}
 {% endif %}
 <div class="mb-3">
-  <a href="../materiaCrearBodeguero/" class="btn btn-success">
+  <a href="{%url 'materiaCrearBodeguero'%}" class="btn btn-success">
       <i class="bi bi-plus-circle-fill"></i> Agregar Nueva Materia
   </a>
 </div>
@@ -35,7 +35,7 @@
                     <td>{{mat.unidadMedida}}</td>
                     <td>{{mat.estadoMateria}}</td>
                     <td>
-                      <a href="../compras_bodeguero/{{mat.nombre}}"
+                      <a href="{%url 'agregarCompraBodeguero' mat.id%}"
                         class='btn btn-info'><i class="bi bi-plus-circle-fill"></i>
                      </a>
                   </td>

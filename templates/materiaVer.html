@@ -39,17 +39,17 @@
                     <td>{{mat.estadoMateria}}</td>
                 
                     <td>
-                        <a href="../materiaActualizar/{{mat.id}}"
+                        <a href="{%url 'materiaActualizar' mat.id%}"
                           class='btn btn-info'><i class="bi bi-feather"></i>
                        </a>
                     </td>
                     <td>
-                      <a href="../comprasAgregar/{{mat.nombre}}"
+                      <a href="{%url 'comprasAgregar' mat.nombre%}"
                         class='btn btn-info'><i class="bi bi-plus-circle-fill"></i>
                      </a>
                   </td>
                   <td>
-                    <a href="../materiaDeshabilitar/{{mat.id}}" class="btn btn-danger">
+                    <a href="{%url 'materiaDeshabilitar' mat.id%}" class="btn btn-danger">
                         Deshabilitar
                     </a>
                 </td>

@@ -12,7 +12,7 @@
     {% endfor %}
 {% endif %}
 <div class="mb-3">
-    <a href="../productosVer/" class="btn btn-success">
+    <a href="{%url 'productosVer'%}" class="btn btn-success">
         <i class="bi bi-plus-circle-fill"></i> Materias Habilitadas
     </a>
   </div>
@@ -43,7 +43,7 @@
             <td>{{ producto.estadoProducto }}</td>
     
             <td>
-                <a href="../productosHabilitar/{{producto.id}}"
+                <a href="{%url 'productosHabilitar' producto.id%}"
                   class='btn btn-danger'><i class="bi bi-trash">Habilitar</i>
                </a>
             </td>

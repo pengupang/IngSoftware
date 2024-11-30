@@ -21,51 +21,50 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('login/', views.login, name='login'),
     path('registro/', views.crearcuenta, name='register'),
-    path('comprasVer/',views.compras_Ver),
-    path('comprasAgregar/<str:nombre>',views.compra_agregar),
+    path('comprasVer/',views.compras_Ver,name= 'comprasVer'),
+    path('comprasAgregar/<str:nombre>',views.compra_agregar,name='comprasAgregar'),
     
     
     path('materiaVer/',views.materiaVer, name='materiaVer'),
-    path('materiaVerBodeguero/', views.materiaVerBodeguero, name='materiaVerBodeguero'),
-    path('materiaCrear/',views.materiaCrear),
-    path('materiaActualizar/<int:id>',views.materiaActualizar),
-    path('materiaDeshabilitar/<int:id>',views.materiaDeshabilitar),
-    path('materiasDeshabilitadas/',views.materiasDeshabilitadas),
-    path('materiasHabilitar/<int:id>',views.materiaHabilitar),
+    path('materiaCrear/',views.materiaCrear,name='materiaCrear'),
+    path('materiaActualizar/<int:id>',views.materiaActualizar,name='materiaActualizar'),
+    path('materiaDeshabilitar/<int:id>',views.materiaDeshabilitar,name='materiaDeshabilitar'),
+    path('materiasDeshabilitadas/',views.materiasDeshabilitadas,name='materiasDeshabilitadas'),
+    path('materiasHabilitar/<int:id>',views.materiaHabilitar,name='materiasHabilitar'),
     
     
 
     
     path('productosVer/', views.productosVer, name='productosVer'), 
     path('nuevosProducto/', views.productosCrearNuevo,name='productosCrearNuevo'),
-    path('productosActualizar/<int:id>', views.productosActualizar),
-    path('productosDeshabilitar/<int:id>', views.productosDeshabilitar),
-    path('productosDeshabilitados/',views.productosVerDeshabilitados),
-    path('productosHabilitar/<int:id>',views.productosHabilitar),
+    path('productosActualizar/<int:id>', views.productosActualizar,name='productosActualizar'),
+    path('productosDeshabilitar/<int:id>', views.productosDeshabilitar,name='productosDeshabilitar'),
+    path('productosDeshabilitados/',views.productosVerDeshabilitados,name='productosDeshabilitados'),
+    path('productosHabilitar/<int:id>',views.productosHabilitar,name='productosHabilitar'),
    
    
     path('proveedoresVer/', views.proveedoresVer, name='proveedoresVer'),
-    path('proveedoresCrear/', views.proveedoresCrear),
-    path('proveedoresActualizar/<int:id>', views.proveedoresActualizar),
-    path('proveedoresDeshabilitar/<int:id>',views.proveedoresDeshabilitar),
-    path('proveedoresDeshabilitados/',views.proveedoresDeshabilitados),
-    path('proveedoresHabilitar/<int:id>',views.proveedoresHabilitar),
+    path('proveedoresCrear/', views.proveedoresCrear, name='proveedoresCrear'),
+    path('proveedoresActualizar/<int:id>', views.proveedoresActualizar, name='proveedoresActualizar'),
+    path('proveedoresDeshabilitar/<int:id>',views.proveedoresDeshabilitar, name='proveedoresDeshabilitar'),
+    path('proveedoresDeshabilitados/',views.proveedoresDeshabilitados, name='proveedoresDeshabilitados'),
+    path('proveedoresHabilitar/<int:id>',views.proveedoresHabilitar, name='proveedoresHabilitar'),
     path('delete_proveedores/<int:id>/', views.delete_proveedores, name='delete_proveedores'),
     
     
-    path('lista_usuarios/', views.lista_usuarios),
-    path('crear_usuario/', views.crear_usuario),
-    path('actualizar_usuario/<int:id>', views.actualizar_usuario),
+    path('lista_usuarios/', views.lista_usuarios,name='lista_usuarios'),
+    path('crear_usuario/', views.crear_usuario,name='crear_usuario'),
+    path('actualizar_usuario/<int:id>', views.actualizar_usuario,name='actualizar_usuario'),
     path('delete-usuario/<int:emp_id>/', views.delete_usuario, name='delete_usuario'),
     
     
-    path('bodegueroVer/',views.bodeguerosVer),
-    path('bodegueroCrear/',views.bodegueroCrear),
-    path('materiaCrearBodeguero/', views.materiaCrearBodeguero),
+    path('bodegueroVer/',views.bodeguerosVer,name='bodeguerosVer'),
+    path('bodegueroCrear/',views.bodegueroCrear, name='bodegueroCrear'),
+    path('materiaCrearBodeguero/', views.materiaCrearBodeguero, name='materiaCrearBodeguero'),
     path('materiaVerBodeguero/', views.materiaVerBodeguero, name='materiaVerBodeguero'),
-    path('compras_bodeguero/<str:nombre>',views.compra_agregarBodeguero),
-    path('productos_bodeguero',views.productosVerBodeguero),
-    path('proveedores_bodeguero/',views.proveedoresVerBodeguero),
+    path('compras_bodeguero/<str:nombre>',views.compra_agregarBodeguero,name='agregarCompraBodeguero'),
+    path('productos_bodeguero',views.productosVerBodeguero, name='verProductosBodeguero'),
+    path('proveedores_bodeguero/',views.proveedoresVerBodeguero,name='verProveedoresBodeguero'),
     
     
 ]

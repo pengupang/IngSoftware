@@ -11,10 +11,10 @@
     {% endfor %}
 {% endif %}
 <div class="mb-3">
-  <a href="../proveedoresCrear/" class="btn btn-success">
+  <a href="{%url 'proveedoresCrear'%}" class="btn btn-success">
       <i class="bi bi-plus-circle-fill"></i> Agregar Nuevo Proveedor
   </a>
-  <a href="../proveedoresDeshabilitados/" class="btn btn-success">
+  <a href="{%url 'proveedoresDeshabilitados'%}" class="btn btn-success">
     <i class="bi bi-plus-circle-fill"></i> Proveedores Deshabilitados
 </a>
 </div>
@@ -40,12 +40,12 @@
                     <td>{{pro.estado}}</td>
                 
                     <td>
-                        <a href="../proveedoresActualizar/{{pro.id}}"
+                        <a href="{%url 'proveedoresActualizar' pro.id%}"
                           class='btn btn-info'><i class="bi bi-pencil">Editar</i>
                        </a>
                     </td>
                     <td>
-                        <a href="../proveedoresDeshabilitar/{{pro.id}}"
+                        <a href="{%url 'proveedoresDeshabilitar' pro.id%}"
                           class='btn btn-danger'><i class="bi bi-trash">Deshabilitar</i>
                        </a>
                     </td>

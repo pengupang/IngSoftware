@@ -15,7 +15,7 @@
         <a href="../nuevosProducto/" class="btn btn-success">
             <i class="bi bi-plus-circle-fill"></i> Agregar Nuevo Producto
         </a>
-        <a href="../productosDeshabilitados/" class="btn btn-success">
+        <a href="{%url 'productosDeshabilitados'%}" class="btn btn-success">
             <i class="bi bi-plus-circle-fill"></i> Materias Deshabilitadas
         </a>
       </div>
@@ -45,12 +45,12 @@
                 </td>
                 <td>{{ producto.estadoProducto }}</td>
                 <td>
-                    <a href="../productosActualizar/{{producto.id}}"
+                    <a href="{%url 'productosActualizar' producto.id%}"
                       class='btn btn-info'><i class="bi bi-pencil">Editar</i>
                    </a>
                 </td>
                 <td>
-                    <a href="../productosDeshabilitar/{{producto.id}}"
+                    <a href="{%url 'productosDeshabilitar' producto.id%}"
                       class='btn btn-danger'><i class="bi bi-trash">Deshabilitar</i>
                    </a>
                 </td>

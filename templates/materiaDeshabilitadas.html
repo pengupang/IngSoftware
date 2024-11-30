@@ -10,7 +10,7 @@
         </div>
     {% endfor %}
 {% endif %}
-    <a href="../materiaVer/" class="btn btn-success">
+    <a href="{%url 'materiaVer'%}" class="btn btn-success">
         <i class="bi bi-plus-circle-fill"></i> Materias Habilitadas
     </a>
         <table class="table table-striped">
@@ -34,7 +34,7 @@
                     <td>{{mat.estadoMateria}}</td>
                 
                         <td>
-                            <a href="../materiasHabilitar/{{mat.id}}" class="btn btn-success">
+                            <a href="{%url 'materiasHabilitar' mat.id%}" class="btn btn-success">
                                 Habilitar
                             </a>
                         </td>

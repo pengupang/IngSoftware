@@ -9,7 +9,7 @@
         </div>
     {% endfor %}
 {% endif %}
-    <a href="../proveedoresVer/" class="btn btn-success">
+    <a href="{%url 'proveedoresVer'%}" class="btn btn-success">
         <i class="bi bi-plus-circle-fill"></i> Proveedores Habilitados
     </a>
         <table class="table table-striped">
@@ -31,7 +31,7 @@
                     <td>{{pro.estado}}</td>
                 
                         <td>
-                            <a href="../proveedoresHabilitar/{{pro.id}}" class="btn btn-success">
+                            <a href="{%url 'proveedoresHabilitar' pro.id%}" class="btn btn-success">
                                 Habilitar
                             </a>
                         </td>
