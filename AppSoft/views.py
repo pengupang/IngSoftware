@@ -4,6 +4,8 @@ from .validators import validar_rut_mod11
 from django.core.exceptions import ValidationError
 from django.contrib import messages
 from . import forms
+from django.db.models import Q
+from datetime import datetime
 from .forms import MateriaPrimaForm,ProductosForm,ProveedoresForm,CompraForm, Usuariocuentaform, BodegueroForm
 
 def crearcuenta(request):
@@ -41,11 +43,23 @@ Aqui van las views de Materia Prima
 
 def materiaVer (request):
     materia=MateriaPrima.objects.filter(estadoMateria=True)
+    busqueda = request.GET.get('datosMatAd','')
+    if busqueda :
+        materia = MateriaPrima.objects.filter(
+            Q(nombre__icontains=busqueda) & 
+            Q(estadoMateria=True)
+        )
     data = {'materia' : materia, 'titulo':'Tabla Materia Prima'}
     return render (request,'materiaVer.html',data)
 
 def materiaVerBodeguero (request):
     materia=MateriaPrima.objects.filter(estadoMateria=True)
+    busqueda = request.GET.get('matBodeguero','')
+    if busqueda :
+        materia = MateriaPrima.objects.filter(
+            Q(nombre__icontains=busqueda) & 
+            Q(estadoMateria=True)
+        )
     data = {'materia' : materia, 'titulo':'Tabla Materia Prima'}
     return render (request,'materia_bodeguero.html',data)
 
@@ -129,6 +143,14 @@ Aqui van las views de Productos
 """
 def productosVer(request):
     productos = Productos.objects.filter(estadoProducto=True).prefetch_related('productomateria_set__materia')
+    busqueda = request.GET.get('productoVer','')
+    if busqueda :
+        productos = Productos.objects.filter(
+            Q(nombre__icontains=busqueda) |
+            Q(composicion__nombre__icontains=busqueda) & 
+            Q(estadoProducto=True)
+            
+        )
     data = {'productos': productos, 'titulo': 'Tabla Productos'}
     return render(request, 'productosVer.html', data)
 
@@ -189,6 +211,14 @@ def productosCrearNuevo(request):
 
 def productosVerBodeguero(request):
     productos=Productos.objects.filter(estadoProducto=True)
+    busqueda = request.GET.get('produBode','')
+    if busqueda :
+        productos = Productos.objects.filter(
+            Q(nombre__icontains=busqueda) |
+            Q(composicion__nombre__icontains=busqueda) & 
+            Q(estadoProducto=True)
+            
+        )
     data = {'productos' : productos, 'titulo':'Tabla Productos'}
     return render (request,'productos_bodeguero.html',data)
 
@@ -248,11 +278,24 @@ Aqui van las views de Proveedores
 """
 def proveedoresVer(request):
     proveedores=Proveedores.objects.filter(estado=True)
+    busqueda = request.GET.get('proVer','')
+    if busqueda :
+        proveedores = Proveedores.objects.filter(
+            Q(rut__icontains=busqueda) |
+            Q(nombre__icontains=busqueda) & 
+            Q(estado=True)
+        )
     data = {'proveedores' : proveedores, 'titulo':'Tabla Proveedores'}
     return render (request,'proveedoresVer.html',data)
 
 def proveedoresVerBodeguero(request):
     proveedores=Proveedores.objects.all()
+    busqueda = request.GET.get('provBodeguero','')
+    if busqueda :
+        proveedores = Proveedores.objects.filter(
+            Q(nombre__icontains=busqueda) & 
+            Q(estado=True)
+        )
     data = {'proveedores' : proveedores, 'titulo':'Tabla Proveedores'}
     return render (request,'proveedores_bodeguero.html',data)
 
@@ -418,6 +461,12 @@ def compra_agregarBodeguero(request, nombre):
 
 def compras_Ver (request):
     compras=Compra.objects.all()
+    fecha_inicio = request.GET.get('fecha_inicio','')
+    fecha_fin = request.GET.get('fecha_fin','')
+    if fecha_inicio and fecha_fin:  
+            fecha_inicio = datetime.strptime(fecha_inicio, '%Y-%m-%d')
+            fecha_fin = datetime.strptime(fecha_fin, '%Y-%m-%d')
+            compras = Compra.objects.filter(fecha__range=(fecha_inicio, fecha_fin))
     data = {'compras' : compras, 'titulo':'Tabla Ingresos Materia Prima'}
     return render (request,'compras_ver.html',data)
 
@@ -426,6 +475,11 @@ def compras_Ver (request):
 
 def bodeguerosVer(request):
     bodeguero=Bodeguero.objects.all()
+    busqueda = request.GET.get('datosBodeguero','')
+    if busqueda :
+        bodeguero = Bodeguero.objects.filter(
+            Q(nombre__icontains=busqueda) 
+        )
     data = {'boguederos' : bodeguero, 'titulo':'Tabla Boguederos'}
     return render (request,'BodegueroVer.html',data)
 
