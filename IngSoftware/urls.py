@@ -23,6 +23,7 @@ urlpatterns = [
     path('registro/', views.crearcuenta, name='register'),
     path('comprasVer/',views.compras_Ver,name= 'comprasVer'),
     path('comprasAgregar/<str:nombre>',views.compra_agregar,name='comprasAgregar'),
+    path('agregarCompraBodeguero/<str:nombre>', views.compra_agregarBodeguero, name='compra_agregarBodeguero'),
     
     
     path('materiaVer/',views.materiaVer, name='materiaVer'),
