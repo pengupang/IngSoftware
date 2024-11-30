@@ -364,6 +364,11 @@ Aqui van las views de Usuarios
 """
 def lista_usuarios(request):
     usuarios = Usuario.objects.all()
+    busqueda = request.GET.get('usuarioVer','')
+    if busqueda :
+        usuarios = Usuario.objects.filter(
+            Q(nombre__icontains=busqueda) 
+        )
     data = {'usuarios' : usuarios, 'titulo':'Tabla Usuarios'}
     return render(request, 'usuarios_ver.html',data)
 
