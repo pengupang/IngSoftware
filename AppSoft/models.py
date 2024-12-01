@@ -67,7 +67,7 @@ class Compra(models.Model):
     lote = models.DecimalField(max_digits=10, decimal_places=2)
     cantidad = models.FloatField(validators=[MinValueValidator(0.0)])
     materia = models.ForeignKey(MateriaPrima, on_delete=models.CASCADE, blank=True, null=True)
-
+    
     def __str__(self):
         return f"Compra {self.id} - {self.materia.nombre}"
     

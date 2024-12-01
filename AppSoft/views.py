@@ -326,7 +326,9 @@ def proveedoresActualizar(request,id):
     if request.method == "POST": 
         form=ProveedoresForm(request.POST,instance=proveedor)
         if form.is_valid():
-            form.save()
+            nueva_proveedor = form.save(commit=False)
+            nueva_proveedor.estado = True
+            nueva_proveedor.save()
             messages.success(request, 'Actualización éxitosa.')
             return redirect('../proveedoresVer')
     data={'form':form , 'titulo': 'Actualizar Proveedores'}
@@ -402,18 +404,18 @@ def delete_usuario(request, emp_id):
 Aqui van las views de ingresos
 """
 def compra_agregar(request, nombre):
-    materia = get_object_or_404(MateriaPrima, nombre=nombre)  
+    materia = get_object_or_404(MateriaPrima, nombre=nombre)
 
     if request.method == 'POST':
         form = CompraForm(request.POST)
         if form.is_valid():
             compra = form.save(commit=False)
-            compra.materia = materia 
+            compra.materia = materia
             compra.save()
-            
+
             compras_previas = Compra.objects.filter(materia=materia)
             total_compras = sum(compra.cantidad for compra in compras_previas)
-            materia.cantidad =total_compras
+            materia.cantidad = total_compras
             materia.save()
             messages.success(request, 'Ingreso éxitoso.')
             return redirect('../../materiaVer/')
@@ -423,11 +425,14 @@ def compra_agregar(request, nombre):
     else:
         form = CompraForm()
 
+        # Filtrar proveedores activos en la vista
+        form.fields['proveedor'].queryset = Proveedores.objects.filter(estado=True)
+
     context = {
         'form': form,
         'titulo': 'Agregar Compra',
-        'next_id': Compra.objects.count() + 1,  
-        'nomMateria': materia,  
+        'next_id': Compra.objects.count() + 1,
+        'nomMateria': materia,
     }
     return render(request, 'comprar_agregar.html', context)
 
