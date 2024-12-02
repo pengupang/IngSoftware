@@ -459,6 +459,7 @@ def compra_agregarBodeguero(request, nombre):
             print("Formulario no válido:", form.errors)
     else:
         form = CompraForm()
+        form.fields['proveedor'].queryset = Proveedores.objects.filter(estado=True)
 
     context = {
         'form': form,
