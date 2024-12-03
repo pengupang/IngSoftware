@@ -37,13 +37,19 @@ class Proveedores (models.Model):
 
     
 class Productos(models.Model):
-    nombre = models.CharField(max_length=60)
+    nombre = models.CharField(max_length=60, unique=True)
     cantidad = models.IntegerField()
-    composicion = models.ManyToManyField('MateriaPrima', through='ProductoMateria',related_name='productos')
+    composicion = models.ManyToManyField('MateriaPrima', through='ProductoMateria', related_name='productos')
     estadoProducto = models.BooleanField(default=True)
 
-    def __str__(self):
-        return self.nombre
+    def save(self, *args, **kwargs):
+        if not self.pk: 
+            for materia in self.composicion.all():
+                if materia.cantidad < self.cantidad:
+                    raise ValueError(f"No hay suficiente stock de {materia.nombre} para crear este producto.")
+        super().save(*args, **kwargs)
+
+
 
 class ProductoMateria(models.Model):
     producto = models.ForeignKey(Productos, on_delete=models.CASCADE)

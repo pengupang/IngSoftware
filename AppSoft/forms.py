@@ -37,34 +37,49 @@ class Usuariocuentaform(forms.ModelForm):
 class ProveedoresForm(forms.ModelForm):
     class Meta:
         model = Proveedores
-        fields='__all__'
+        fields = '__all__'
         widgets = {
-            'nombre' : forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nombre del Proveedor'}),
-            'contacto': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Contacto', 'min': 100000000, 'max': 99999999999,'pattern': r'^\d{9}$'}),
+            'nombre': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nombre del Proveedor'}),
+            'contacto': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Contacto', 'min': 100000000, 'max': 99999999999, 'pattern': r'^\d{9}$'}),
             'rut': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'RUT', 'pattern': r'^\d{1,8}-[0-9kK]{1}$'})
-
         }
+
+    def clean_nombre(self):
+        nombre = self.cleaned_data.get('nombre')
+        if Proveedores.objects.filter(nombre=nombre).exists():
+            raise forms.ValidationError('Ya existe un proveedor con este nombre.')
+        return nombre
 
 
 class ProductosForm(forms.ModelForm):
     composicion = forms.ModelMultipleChoiceField(
-        queryset=MateriaPrima.objects.all(),
+        queryset=MateriaPrima.objects.filter(estadoMateria=True),  # Solo materias activas
         widget=forms.CheckboxSelectMultiple
     )
-    cantidad = forms.IntegerField(min_value=1, label='Cantidad de Productos',widget=forms.NumberInput(
-            attrs={
-                'class': 'form-control',
-                'placeholder': 'Cantidad Producto',
-                'required': 'required'
-            }))
+    cantidad = forms.IntegerField(
+        min_value=1,
+        label='Cantidad de Productos',
+        widget=forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Cantidad Producto', 'required': 'required'})
+    )
 
     class Meta:
         model = Productos
         fields = ['nombre', 'cantidad', 'composicion']
         widgets = {
-            'nombre' : forms.TextInput(attrs={'class':'form-control', 'placeholder':'Nombre Producto','required': 'required'}),
-           
+            'nombre': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nombre Producto', 'required': 'required'}),
         }
+
+    def clean(self):
+        cleaned_data = super().clean()
+        composicion = cleaned_data.get('composicion')
+        cantidad = cleaned_data.get('cantidad')
+
+        if composicion:
+            for materia in composicion:
+                if materia.cantidad < cantidad:
+                    raise forms.ValidationError(f"No hay suficiente stock de la materia prima: {materia.nombre}. Disponible: {materia.cantidad}.")
+        return cleaned_data
+
 
 
 

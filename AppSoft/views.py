@@ -163,42 +163,51 @@ def productosVerDeshabilitados (request):
 
 def productosCrearNuevo(request):
     form = ProductosForm()
-    materias_primas = MateriaPrima.objects.all()  # Obtenemos todas las materias primas
+    # Solo mostrar materias primas activas
+    materias_primas = MateriaPrima.objects.filter(estadoMateria=True)
 
     if request.method == 'POST':
         form = ProductosForm(request.POST)
         if form.is_valid():
-            # Crear el producto con la cantidad especificada
             nuevo_producto = form.save(commit=False)
             nuevo_producto.estadoProducto = True
-            nuevo_producto.save()
 
-            # Obtener las materias primas seleccionadas
             materias_seleccionadas = request.POST.getlist('composicion')
+            materias_insuficientes = []
 
             for materia_id in materias_seleccionadas:
                 materia = get_object_or_404(MateriaPrima, id=materia_id)
 
-                # Obtener la cantidad utilizada de la materia prima seleccionada
                 cantidad_utilizada = float(request.POST.get(f'cantidad_utilizada_{materia_id}', 0))
 
-                if cantidad_utilizada > 0:
-                    # Crear la relación ProductoMateria
-                    ProductoMateria.objects.create(
-                        producto=nuevo_producto,
-                        materia=materia,
-                        cantidad_utilizada=cantidad_utilizada
-                    )
+                if cantidad_utilizada <= 0:
+                    messages.error(request, f"La cantidad utilizada para {materia.nombre} debe ser mayor a 0.")
+                    return render(request, 'productosNuevos.html', {'form': form, 'materias_primas': materias_primas, 'titulo': 'Agregar Producto'})
 
-                    # Restar la cantidad de materia prima utilizada
-                    if materia.cantidad >= cantidad_utilizada:
-                        materia.cantidad -= cantidad_utilizada
-                        materia.save()
-                    else:
-                        # Si no hay suficiente cantidad, mostrar un error
-                        messages.error(request, f"Inventario insuficiente para {materia.nombre}")
-                        
-            return redirect('../productosVer/')  # Redirigir a la vista que lista los productos
+                if materia.cantidad < cantidad_utilizada:
+                    materias_insuficientes.append(f"{materia.nombre} (Disponible: {materia.cantidad}, Necesaria: {cantidad_utilizada})")
+
+
+            if materias_insuficientes:
+                messages.error(request, f"Stock insuficiente para: {', '.join(materias_insuficientes)}")
+                return render(request, 'productosNuevos.html', {'form': form, 'materias_primas': materias_primas, 'titulo': 'Agregar Producto'})
+
+            nuevo_producto.save()
+            for materia_id in materias_seleccionadas:
+                materia = get_object_or_404(MateriaPrima, id=materia_id)
+                cantidad_utilizada = float(request.POST.get(f'cantidad_utilizada_{materia_id}', 0))
+
+                ProductoMateria.objects.create(
+                    producto=nuevo_producto,
+                    materia=materia,
+                    cantidad_utilizada=cantidad_utilizada
+                )
+
+                materia.cantidad -= cantidad_utilizada
+                materia.save()
+
+            messages.success(request, 'Producto creado exitosamente.')
+            return redirect('../productosVer/')  
 
     data = {
         'form': form,
