@@ -18,7 +18,7 @@ class Usuariocuentaform(forms.ModelForm):
         widgets = {
             'nombre' : forms.TextInput(attrs={'class':'form-control','placeholder':'Nombre Usuario','required':'required'}),
             'rol' : forms.Select(attrs={'class':'form-control','placeholder':'Rol','required':'required'},choices={'administrador':'administrador','bodeguero':'bodeguero'}),
-            'contraseña' : forms.TextInput(attrs={'class':'form-control','placeholder':'contraseña','required':'required'}),
+            'contraseña' : forms.TextInput(attrs={'class':'form-control','type':'password','placeholder':'contraseña','required':'required'}),
             'estadoUsuario' : forms.CheckboxInput(attrs={'class':'form-check-input'})
         }
 
