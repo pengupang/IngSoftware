@@ -43,11 +43,7 @@ class Productos(models.Model):
     estadoProducto = models.BooleanField(default=True)
 
     def save(self, *args, **kwargs):
-        if not self.pk: 
-            for materia in self.composicion.all():
-                if materia.cantidad < self.cantidad:
-                    raise ValueError(f"No hay suficiente stock de {materia.nombre} para crear este producto.")
-        super().save(*args, **kwargs)
+        super().save(*args, **kwargs) 
 
 
 

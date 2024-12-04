@@ -105,19 +105,31 @@ def materiaCrearBodeguero(request):
     data = {'form': form, 'titulo': 'Agregar Materia Prima'}
     return render(request, 'materiaCrear-bodeguero.html', data)
 
-def materiaActualizar(request,id):
+def materiaActualizar(request, id):
     materia = MateriaPrima.objects.get(id=id)
-    form= MateriaPrimaForm(instance=materia)
-    if request.method == "POST": 
-        form=MateriaPrimaForm(request.POST,instance=materia)
+    form = MateriaPrimaForm(instance=materia)
+    
+    if request.method == "POST":
+        form = MateriaPrimaForm(request.POST, instance=materia)
         if form.is_valid():
-            form.save()
-            messages.success(request, 'Materia Actualizada con éxito.')
-            return redirect('../materiaVer/')
+            nombre_materia = form.cleaned_data.get('nombre')
+            if MateriaPrima.objects.filter(nombre=nombre_materia).exclude(id=materia.id).exists():
+                messages.error(request, "Ya existe otra materia prima con este nombre.")
+            else:
+                materia_actualizada = form.save(commit=False)
+                materia_actualizada.estadoMateria = True 
+                materia_actualizada.save()
+                messages.success(request, 'Materia actualizada con éxito.')
+                return redirect('../materiaVer/')
         else:
-            messages.error(request, " Ocurrio un error al actualizar la materia")
-    data={'form':form , 'titulo': 'Actualizar Materia Prima'}
-    return render(request,'materiaCrear.html',data)
+            messages.error(request, "Ocurrió un error al actualizar la materia.")
+    
+    data = {'form': form, 'titulo': 'Actualizar Materia Prima'}
+    return render(request, 'materiaCrear.html', data)
+
+
+
+
 
 def materiaDeshabilitar(request,id):
      materia=MateriaPrima.objects.get(id=id)
@@ -163,7 +175,6 @@ def productosVerDeshabilitados (request):
 
 def productosCrearNuevo(request):
     form = ProductosForm()
-    # Solo mostrar materias primas activas
     materias_primas = MateriaPrima.objects.filter(estadoMateria=True)
 
     if request.method == 'POST':
@@ -171,6 +182,7 @@ def productosCrearNuevo(request):
         if form.is_valid():
             nuevo_producto = form.save(commit=False)
             nuevo_producto.estadoProducto = True
+            nuevo_producto.save() 
 
             materias_seleccionadas = request.POST.getlist('composicion')
             materias_insuficientes = []
@@ -182,17 +194,17 @@ def productosCrearNuevo(request):
 
                 if cantidad_utilizada <= 0:
                     messages.error(request, f"La cantidad utilizada para {materia.nombre} debe ser mayor a 0.")
+                    nuevo_producto.delete() 
                     return render(request, 'productosNuevos.html', {'form': form, 'materias_primas': materias_primas, 'titulo': 'Agregar Producto'})
 
                 if materia.cantidad < cantidad_utilizada:
                     materias_insuficientes.append(f"{materia.nombre} (Disponible: {materia.cantidad}, Necesaria: {cantidad_utilizada})")
 
-
             if materias_insuficientes:
                 messages.error(request, f"Stock insuficiente para: {', '.join(materias_insuficientes)}")
+                nuevo_producto.delete()
                 return render(request, 'productosNuevos.html', {'form': form, 'materias_primas': materias_primas, 'titulo': 'Agregar Producto'})
-
-            nuevo_producto.save()
+            
             for materia_id in materias_seleccionadas:
                 materia = get_object_or_404(MateriaPrima, id=materia_id)
                 cantidad_utilizada = float(request.POST.get(f'cantidad_utilizada_{materia_id}', 0))
@@ -205,7 +217,9 @@ def productosCrearNuevo(request):
 
                 materia.cantidad -= cantidad_utilizada
                 materia.save()
-
+            else:
+                messages.error(request, "Ocurrió un error al actualizar la materia.")
+            
             messages.success(request, 'Producto creado exitosamente.')
             return redirect('../productosVer/')  
 
@@ -250,27 +264,22 @@ def productosActualizar(request, id):
     titulo = "Actualizar Producto"
 
     if request.method == 'POST':
-        cantidad_agregar = int(request.POST.get('cantidad', 0))
-        producto.cantidad += cantidad_agregar
-        producto.save()
+        # Obtener el nuevo nombre del producto
+        nuevo_nombre = request.POST.get('nombre', '')
+        
+        # Verificar si el nombre ingresado ya está en uso, excluyendo el producto actual
+        if Productos.objects.filter(nombre=nuevo_nombre).exclude(id=id).exists():
+            messages.error(request, f"El nombre '{nuevo_nombre}' ya está en uso. Por favor, elija otro nombre.")
+            return render(request, 'agregarCantidadProducto.html', {'titulo': titulo, 'producto': producto})
 
-        for composicion in producto.productomateria_set.all():
-            materia_id = composicion.materia.id
-            nueva_cantidad_utilizada = float(request.POST.get(f'cantidad_utilizada_{materia_id}', 0))
-            diferencia_cantidad = nueva_cantidad_utilizada - composicion.cantidad_utilizada
-            
-            # Actualizar la cantidad de materia prima en el inventario
-            if composicion.materia.cantidad >= diferencia_cantidad:
-                composicion.materia.cantidad -= diferencia_cantidad
-                composicion.materia.save()
+        # Actualizar solo el nombre del producto
+        if nuevo_nombre:
+            producto.nombre = nuevo_nombre
+            producto.save()
 
-                # Actualizar la cantidad utilizada en la relación ProductoMateria
-                composicion.cantidad_utilizada = nueva_cantidad_utilizada
-                composicion.save()
-            else:
-                messages.error(request, f"Inventario insuficiente para {composicion.materia.nombre}")
-                
+        # Aquí no actualizas la cantidad ni las materias primas para que no puedan cambiar esos valores
 
+        messages.success(request, 'Producto actualizado exitosamente.')
         return redirect('productosVer')
 
     data = {
@@ -278,6 +287,7 @@ def productosActualizar(request, id):
         'producto': producto
     }
     return render(request, 'agregarCantidadProducto.html', data)
+
 
 
 
