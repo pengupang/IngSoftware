@@ -159,7 +159,7 @@ def productosVer(request):
     if busqueda :
         productos = Productos.objects.filter(
             Q(nombre__icontains=busqueda) |
-            Q(composicion__nombre__icontains=busqueda) & 
+            Q(composicion__nombre__contains = busqueda) & 
             Q(estadoProducto=True)
             
         )
@@ -237,8 +237,7 @@ def productosVerBodeguero(request):
     busqueda = request.GET.get('produBode','')
     if busqueda :
         productos = Productos.objects.filter(
-            Q(nombre__icontains=busqueda) |
-            Q(composicion__nombre__icontains=busqueda) & 
+            Q(nombre__icontains=busqueda)  & 
             Q(estadoProducto=True)
             
         )
